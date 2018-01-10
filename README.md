@@ -5,6 +5,10 @@
 
 Ubuntu 16.04
 
+## Docker
+
+Docker CE
+
 ## Deamon service - systemd
 
 Always-running process by systemd
@@ -146,7 +150,7 @@ Equinox.io
 
 ```Shell
 ./equinox release \
-  --version="0.2.4" \
+  --version="0.3.3" \
   --platforms="darwin_amd64 linux_amd64" \
   --signing-key=equinox.key \
   --app="app_h9SyPnPqLpq" \
@@ -159,21 +163,20 @@ Equinox.io
 Facebook Grace
 
 
-# Long-running process
+# Expose device to ngrok
 
-Use GOLANG supervisord program as always-running Cellar.Hub.Manager
+Install ngrok token
 
-https://github.com/ochinchina/supervisord
-
-
-
-
-
-
-
-# Open some ports
+`ngrok authtoken ASDFASDFERWEFASFAWEFWAFA`
 
 ngrok 
+
+
+# Dropbox 
+
+for unhandled situation
+
+
 
 # Connection to the Cellarstone Cloud
 
