@@ -3,8 +3,8 @@ pipeline {
 
   environment {
     GOPATH = '/home/kellersteinlukas/go'
-    GOROOT = '/usr/lib/go-1.9/bin'
-    PATH = "$PATH:$GOROOT:$GOPATH"
+    GOROOT = '/usr/lib/go-1.9'
+    PATH = "$PATH:$GOROOT/bin:$GOPATH"
   }
   
   stages {
