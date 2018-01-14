@@ -22,6 +22,7 @@ pipeline {
       steps {
         sh 'go get github.com/gorilla/mux'
         sh 'go get github.com/equinox-io/equinox'
+        sh 'go get github.com/facebookgo/grace/gracehttp'
         sh 'go get github.com/arschles/go-bindata-html-template'
         sh 'go-bindata views/...'
       }
