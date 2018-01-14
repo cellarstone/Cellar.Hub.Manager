@@ -5,8 +5,8 @@ pipeline {
     stage('Pre Test') {
       steps {
         echo 'Testing Golang'
-        echo '$GOROOT'
-        echo '$GOPATH'
+        sh 'echo $GOROOT'
+        sh 'echo $GOPATH'
         sh 'go version'
       }
     }
