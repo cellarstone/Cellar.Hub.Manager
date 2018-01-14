@@ -15,7 +15,7 @@ pipeline {
         branch 'master' 
       }
       steps {
-        sh './equinox release \
+        sh './equinox/equinox release \
                 --version="0.3.4" \
                 --platforms="darwin_amd64 linux_amd64" \
                 --signing-key=equinox.key \
