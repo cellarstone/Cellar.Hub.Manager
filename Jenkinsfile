@@ -20,7 +20,9 @@ pipeline {
         branch 'master' 
       }
       steps {
-        sh 'go get ./...'
+        sh 'go get github.com/gorilla/mux'
+        sh 'go get github.com/equinox-io/equinox'
+        sh 'go get github.com/arschles/go-bindata-html-template'
         sh 'go-bindata views/...'
       }
     }
