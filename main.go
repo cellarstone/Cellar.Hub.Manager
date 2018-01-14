@@ -1,20 +1,26 @@
 package main
 
 import (
-	"encoding/json"
 	"flag"
 	"fmt"
 	"net/http"
 	"os"
 	"os/exec"
+	"path/filepath"
 	"strconv"
+	"syscall"
 	"time"
 
 	"github.com/equinox-io/equinox"
-	"github.com/facebookgo/grace/gracehttp"
 	"github.com/gorilla/mux"
+
+	"github.com/arschles/go-bindata-html-template"
 )
 
+//go:generate go-bindata views/...
+
+//************************************************************
+//************************************************************
 //************************************************************
 //************************************************************
 // EQUINOX
@@ -67,74 +73,31 @@ func update(channel string) string {
 
 //************************************************************
 //************************************************************
-
-// type Article struct {
-// 	Id      int    `json:"Id"`
-// 	Title   string `json:"Title"`
-// 	Desc    string `json:"desc"`
-// 	Content string `json:"content"`
-// }
-
-// type Articles []Article
-
-// func returnAllArticles(w http.ResponseWriter, r *http.Request) {
-// 	articles := Articles{
-// 		Article{Title: "Hello", Desc: "Article Description", Content: "Article Content"},
-// 		Article{Title: "Hello 2", Desc: "Article Description", Content: "Article Content"},
-// 	}
-// 	fmt.Println("Endpoint Hit: returnAllArticles")
-
-// 	json.NewEncoder(w).Encode(articles)
-// }
-
-// func returnSingleArticle(w http.ResponseWriter, r *http.Request) {
-// 	vars := mux.Vars(r)
-// 	key := vars["id"]
-
-// 	fmt.Fprintf(w, "Key: "+key)
-// }
-
-// func homePage(w http.ResponseWriter, r *http.Request) {
-// 	fmt.Fprintf(w, "Welcome to the HomePage!")
-// 	fmt.Println("Endpoint Hit: homePage")
-// }
-
-// func aboutPage(w http.ResponseWriter, r *http.Request) {
-// 	fmt.Fprintf(w, "Welcome to the AboutPage!")
-// 	fmt.Println("Endpoint Hit: aboutPage")
-// }
-
-// func updatePage(w http.ResponseWriter, r *http.Request) {
-// 	fmt.Fprintf(w, "Welcome to the Update!")
-// 	update("stable")
-// }
-
-// //***********************************************
-// // GORILLA MUX package
-// //***********************************************
-
-// func handleRequests() {
-
-// 	myRouter := mux.NewRouter().StrictSlash(true)
-// 	myRouter.HandleFunc("/", homePage)
-// 	myRouter.HandleFunc("/home", homePage)
-// 	myRouter.HandleFunc("/about", aboutPage)
-// 	myRouter.HandleFunc("/update", updatePage)
-// 	myRouter.HandleFunc("/all", returnAllArticles)
-// 	myRouter.HandleFunc("/article/{id}", returnSingleArticle)
-// 	log.Fatal(http.ListenAndServe(":10000", myRouter))
-// }
-
-// func main() {
-// 	fmt.Println("Rest API v2.3 - Mux Routers")
-// 	handleRequests()
-// }
-
 //************************************************************
 //************************************************************
 
-//************************************************************
-//************************************************************
+func restartGrace() {
+	//RESTART
+	s := strconv.Itoa(pid)
+	cmd := exec.Command("kill", "-USR2", s)
+
+	// Combine stdout and stderr
+	output, err := cmd.CombinedOutput()
+	if err != nil {
+		fmt.Println(err)
+	}
+	fmt.Println(output)
+}
+func restart() {
+	syscall.Kill(-pid, syscall.SIGKILL)
+}
+func restart2() {
+	proc, _ := os.FindProcess(pid)
+	err := proc.Kill()
+	if err != nil {
+		logger.Error("process can't be killed > " + err.Error())
+	}
+}
 
 func check() {
 
@@ -143,15 +106,7 @@ func check() {
 	if result == "OK" {
 
 		//RESTART
-		s := strconv.Itoa(pid)
-		cmd := exec.Command("kill", "-USR2", s)
-
-		// Combine stdout and stderr
-		output, err := cmd.CombinedOutput()
-		if err != nil {
-			fmt.Println(err)
-		}
-		fmt.Println(output)
+		restart2()
 
 		fmt.Println("OK - EVERYTHING WAS UPDATED")
 
@@ -170,7 +125,7 @@ func check() {
 func startChecking() {
 	for {
 		time.Sleep(1 * time.Minute)
-		go check()
+		check()
 	}
 }
 
@@ -179,115 +134,169 @@ func startChecking() {
 
 var pid = 0
 
-type Article struct {
-	Id      int    `json:"Id"`
-	Title   string `json:"Title"`
-	Desc    string `json:"desc"`
-	Content string `json:"content"`
+func myHandler(name string) http.Handler {
+	mux := http.NewServeMux()
+
+	mux.HandleFunc("/home", homePage)
+	mux.HandleFunc("/about", aboutPage)
+	mux.HandleFunc("/allprocesses", processesHandler)
+	mux.HandleFunc("/ngrokprocesses", processesNgrokHandler)
+	mux.HandleFunc("/actualdirectory", actualdirectoryHandler)
+	mux.HandleFunc("/api/allprocesses", apiAllProcessesHandler)
+	mux.HandleFunc("/api/dockerimages", dockerImagesHandler)
+	mux.HandleFunc("/api/dockerpsa", dockerPsaHandler)
+	// mux.HandleFunc("/runngrok", apiRunNgrokHandler)
+
+	return mux
 }
 
-type Articles []Article
-
-func returnAllArticles(w http.ResponseWriter, r *http.Request) {
-	articles := Articles{
-		Article{Title: "Hello", Desc: "Article Description", Content: "Article Content"},
-		Article{Title: "Hello 2", Desc: "Article Description", Content: "Article Content"},
-	}
-	fmt.Println("Endpoint Hit: returnAllArticles")
-
-	json.NewEncoder(w).Encode(articles)
-}
-
-func returnSingleArticle(w http.ResponseWriter, r *http.Request) {
-	vars := mux.Vars(r)
-	key := vars["id"]
-
-	fmt.Fprintf(w, "Key: "+key)
-}
-
-func homePage(w http.ResponseWriter, r *http.Request) {
-	fmt.Fprintf(w, "Welcome to the HomePage! :-) ")
-	fmt.Println("Endpoint Hit: homePage")
-}
-
-func aboutPage(w http.ResponseWriter, r *http.Request) {
-	fmt.Fprintf(w, "Welcome to the AboutPage! :-) ")
-	fmt.Println("Endpoint Hit: aboutPage")
-}
-
-func updatePage(w http.ResponseWriter, r *http.Request) {
-	fmt.Fprintf(w, "Welcome to the Update! :-) ")
-	update("stable")
-}
-
-func restartPage(w http.ResponseWriter, r *http.Request) {
-	fmt.Fprintf(w, "Welcome to the Restart! :-) ")
-	fmt.Println("PID : ", pid)
-
-	s := strconv.Itoa(pid)
-	cmd := exec.Command("kill", "-USR2", s)
-
-	// Combine stdout and stderr
-	output, err := cmd.CombinedOutput()
-	if err != nil {
-		fmt.Println(err)
-	}
-
-	fmt.Println("Restart method ends", output)
+func myRouter() *mux.Router {
+	r := mux.NewRouter()
+	r.Handle("/allprocesses", http.HandlerFunc(processesHandler))
+	r.Handle("/ngrokprocesses", http.HandlerFunc(processesNgrokHandler))
+	r.Handle("/actualdirectory", http.HandlerFunc(actualdirectoryHandler))
+	r.Handle("/api/test", http.HandlerFunc(apiTestHandler))
+	r.Handle("/api/allprocesses", http.HandlerFunc(apiAllProcessesHandler))
+	r.Handle("/api/actualdirectory", http.HandlerFunc(apiActualDirectoryHandler))
+	r.Handle("/api/checkprocess/{pid}", http.HandlerFunc(testCheckProcessWorkflowHandler))
+	r.Handle("/api/killprocess/{id}", http.HandlerFunc(killprocessHandler))
+	r.Handle("/api/dockerimages", http.HandlerFunc(dockerImagesHandler))
+	r.Handle("/api/dockerpsa", http.HandlerFunc(dockerPsaHandler))
+	r.Handle("/api/runngrok/{port}", http.HandlerFunc(apiRunNgrokHandler))
+	return r
 }
 
 //************************************************************
 //************************************************************
 
 var (
-	address0 = flag.String("a0", ":10001", "Zero address to bind to.")
-	address1 = flag.String("a1", ":10002", "First address to bind to.")
-	address2 = flag.String("a2", ":10003", "Second address to bind to.")
-	now      = time.Now()
+	address0 = flag.String("a00", ":10001", "Web1 address to bind to.")
+	address1 = flag.String("a11", ":10002", "Web2 address to bind to.")
+	address2 = flag.String("a22", ":10003", "Web3 address to bind to.")
+	address3 = flag.String("a33", ":10004", "Web4 address to bind to.")
 )
 
-func main() {
-	fmt.Println("Cellarstone manager v0.2.4")
+var layoutDir = "views/layout"
+var processes *template.Template
+var processes2 *template.Template
+var actualDirectory *template.Template
 
-	pid = os.Getpid()
-	fmt.Println("PID : ", pid)
+//Logging
+var logger *DLogger
+var err error
 
-	go startChecking()
+func init() {
+	//set logging
+	logger, err = NewDLogger("Cellar.Hub.Manager")
+	if err != nil {
+		panic(err)
+	}
 
-	flag.Parse()
-	gracehttp.Serve(
-		&http.Server{Addr: *address0, Handler: newHandler("Zero  ")},
-		&http.Server{Addr: *address1, Handler: newHandler("First ")},
-		&http.Server{Addr: *address2, Handler: newHandler("Second")},
-	)
+	//run ngrok
+
 }
 
-func newHandler(name string) http.Handler {
-	mux := http.NewServeMux()
-	// mux.HandleFunc("/sleep/", func(w http.ResponseWriter, r *http.Request) {
-	// 	duration, err := time.ParseDuration(r.FormValue("duration"))
-	// 	if err != nil {
-	// 		http.Error(w, err.Error(), 400)
-	// 		return
-	// 	}
-	// 	time.Sleep(duration)
-	// 	fmt.Fprintf(
-	// 		w,
-	// 		"%s started at %s slept for %d nanoseconds from pid %d.\n",
-	// 		name,
-	// 		now,
-	// 		duration.Nanoseconds(),
-	// 		os.Getpid(),
-	// 	)
-	// })
+func main() {
+	defer startChecking()
+	defer runNgrok()
 
-	mux.HandleFunc("/", homePage)
-	mux.HandleFunc("/home", homePage)
-	mux.HandleFunc("/about", aboutPage)
-	mux.HandleFunc("/update", updatePage)
-	mux.HandleFunc("/restart", restartPage)
-	mux.HandleFunc("/all", returnAllArticles)
-	mux.HandleFunc("/article/{id}", returnSingleArticle)
+	logger.Information("Cellarstone manager v0.3.4")
+	pid = os.Getpid()
+	pidString := strconv.Itoa(pid)
+	logger.Information("PID : " + pidString)
 
-	return mux
+	// NORMAL HTTP TEMPLATES
+	// files := append(layoutFiles(), "views/processes.gohtml")
+	// processes, err = template.ParseFiles(files...)
+	// if err != nil {
+	// 	//low-level exception logging
+	// 	fmt.Println(err)
+	// }
+	// files = append(layoutFiles(), "views/processes2.gohtml")
+	// processes2, err = template.ParseFiles(files...)
+	// if err != nil {
+	// 	//low-level exception logging
+	// 	fmt.Println(err)
+	// }
+	// files = append(layoutFiles(), "views/actualdirectory.gohtml")
+	// actualDirectory, err = template.ParseFiles(files...)
+	// if err != nil {
+	// 	//low-level exception logging
+	// 	fmt.Println(err)
+	// }
+
+	// GO-BINDATA-TEMPLATES
+	files := append(layoutFiles(), "views/processes.gohtml")
+	processes, err = template.New("processes", Asset).ParseFiles(files...)
+	if err != nil {
+		fmt.Printf("error parsing template: %s", err)
+	}
+
+	files = append(layoutFiles(), "views/processes2.gohtml")
+	processes2, err = template.New("processes2", Asset).ParseFiles(files...)
+	if err != nil {
+		fmt.Printf("error parsing template: %s", err)
+	}
+
+	files = append(layoutFiles(), "views/actualdirectory.gohtml")
+	actualDirectory, err = template.New("actualDirectory", Asset).ParseFiles(files...)
+	if err != nil {
+		fmt.Printf("error parsing template: %s", err)
+	}
+
+	//go startChecking()
+	//go runNgrok()
+
+	// FACEBOOK GO GRACE
+	// flag.Parse()
+	// gracehttp.Serve(
+	// 	&http.Server{Addr: *address0, Handler: myHandler("Web11")},
+	// 	&http.Server{Addr: *address1, Handler: myHandler("Web22")},
+	// 	&http.Server{Addr: *address2, Handler: myHandler("Web33")},
+	// 	&http.Server{Addr: *address3, Handler: myHandler("Web44")},
+	// )
+
+	// NORMAL ROUTER
+	r := myRouter()
+	http.ListenAndServe(":10001", r)
+}
+
+//-------------------------------------
+//NGROK
+//-------------------------------------
+func runNgrok() {
+	cccmd := "./ngrok/ngrok http 10001"
+	c5 := exec.Command("bash", "-c", cccmd)
+
+	c6, err := c5.Output()
+	if err != nil {
+		logger.Error("ngrok error")
+		logger.Error(err.Error())
+	}
+	data := printOutput(c6)
+
+	fmt.Println(data)
+
+	//asdf := c5.Process.Pid
+}
+
+//-------------------------------------
+//HELPERS
+//-------------------------------------
+
+func layoutFiles() []string {
+	files, err := filepath.Glob(layoutDir + "/*.gohtml")
+	if err != nil {
+		//low-level exception logging
+		logger.Error(err.Error())
+	}
+	return files
+}
+
+func printOutput(outs []byte) string {
+	result := ""
+	if len(outs) > 0 {
+		result += string(outs)
+	}
+	return result
 }
