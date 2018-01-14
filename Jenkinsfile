@@ -4,15 +4,13 @@ pipeline {
   environment {
     GOPATH = '/home/kellersteinlukas/go'
     GOROOT = '/usr/lib/go-1.9/bin'
-    PATH = "$PATH:$GOROOT/bin:$GOPATH"
+    PATH = "$PATH:$GOROOT:$GOPATH"
   }
   
   stages {
     stage('Pre Test') {
       steps {
         echo 'Testing Golang'
-        echo '$GOROOT'
-        echo '$GOPATH'
         sh 'printenv'
         sh 'go version'
       }
