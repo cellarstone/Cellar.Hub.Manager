@@ -2,7 +2,7 @@ pipeline {
   agent any
 
   environment {
-    GOPATH = '/home/kellersteinlukas/go'
+    GOPATH = '/usr/share/go-1.9'
     GOROOT = '/usr/lib/go-1.9'
     PATH = "$PATH:$GOROOT/bin:$GOPATH"
   }
