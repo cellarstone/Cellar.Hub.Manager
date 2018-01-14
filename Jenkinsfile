@@ -3,7 +3,7 @@ pipeline {
 
   environment {
     GOPATH = '/home/kellersteinlukas/go'
-    GOROOT = '/usr/lib/go-1.9'
+    GOROOT = '/usr/lib/go-1.9/bin'
   }
   
   stages {
@@ -12,6 +12,7 @@ pipeline {
         echo 'Testing Golang'
         echo '$GOROOT'
         echo '$GOPATH'
+        sh 'printenv'
         sh 'go version'
       }
     }
