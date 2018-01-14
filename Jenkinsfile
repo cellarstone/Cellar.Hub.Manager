@@ -20,6 +20,7 @@ pipeline {
         branch 'master' 
       }
       steps {
+        sh 'go get ./...'
         sh 'go-bindata views/...'
       }
     }
