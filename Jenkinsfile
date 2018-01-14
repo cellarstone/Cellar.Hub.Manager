@@ -1,14 +1,15 @@
 pipeline {
   agent any
+
+  environment {
+    GOPATH = '/home/kellersteinlukas/go'
+    GOROOT = '/usr/lib/go-1.9'
+  }
   
   stages {
     stage('Pre Test') {
       steps {
         echo 'Testing Golang'
-        sh 'export GOPATH=/home/kellersteinlukas/go'
-        sh 'export PATH=$GOPATH/bin:$PATH'
-        sh 'export GOROOT=/usr/lib/go-1.9'
-        sh 'export PATH=$GOROOT/bin:$PATH'
         echo '$GOROOT'
         echo '$GOPATH'
         sh 'go version'
