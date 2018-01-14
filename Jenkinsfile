@@ -5,8 +5,12 @@ pipeline {
     stage('Pre Test') {
       steps {
         echo 'Testing Golang'
-        sh 'echo $GOROOT'
-        sh 'echo $GOPATH'
+        sh 'export GOPATH=/home/kellersteinlukas/go'
+        sh 'export PATH=$GOPATH/bin:$PATH'
+        sh 'export GOROOT=/usr/lib/go-1.9'
+        sh 'export PATH=$GOROOT/bin:$PATH'
+        echo '$GOROOT'
+        echo '$GOPATH'
         sh 'go version'
       }
     }
