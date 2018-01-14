@@ -2,9 +2,11 @@ pipeline {
   agent any
   
   stages {
-    stage('Pre Test'){
-      echo 'Testing Golang'
-      sh 'go version'
+    stage('Pre Test') {
+      steps {
+        echo 'Testing Golang'
+        sh 'go version'
+      }
     }
     stage('Build') {
       when {
