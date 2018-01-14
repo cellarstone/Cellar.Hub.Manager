@@ -12,6 +12,7 @@ import (
 	"time"
 
 	"github.com/equinox-io/equinox"
+	"github.com/facebookgo/grace/gracehttp"
 	"github.com/gorilla/mux"
 
 	"github.com/arschles/go-bindata-html-template"
@@ -200,7 +201,7 @@ func main() {
 	defer startChecking()
 	defer runNgrok()
 
-	logger.Information("Cellarstone manager v0.3.4")
+	logger.Information("Cellarstone manager v0.3.5")
 	pid = os.Getpid()
 	pidString := strconv.Itoa(pid)
 	logger.Information("PID : " + pidString)
@@ -244,21 +245,21 @@ func main() {
 		fmt.Printf("error parsing template: %s", err)
 	}
 
-	//go startChecking()
+	go startChecking()
 	//go runNgrok()
 
 	// FACEBOOK GO GRACE
-	// flag.Parse()
-	// gracehttp.Serve(
-	// 	&http.Server{Addr: *address0, Handler: myHandler("Web11")},
-	// 	&http.Server{Addr: *address1, Handler: myHandler("Web22")},
-	// 	&http.Server{Addr: *address2, Handler: myHandler("Web33")},
-	// 	&http.Server{Addr: *address3, Handler: myHandler("Web44")},
-	// )
+	flag.Parse()
+	gracehttp.Serve(
+		&http.Server{Addr: *address0, Handler: myHandler("Web11")},
+		&http.Server{Addr: *address1, Handler: myHandler("Web22")},
+		&http.Server{Addr: *address2, Handler: myHandler("Web33")},
+		&http.Server{Addr: *address3, Handler: myHandler("Web44")},
+	)
 
 	// NORMAL ROUTER
-	r := myRouter()
-	http.ListenAndServe(":10001", r)
+	// r := myRouter()
+	// http.ListenAndServe(":10001", r)
 }
 
 //-------------------------------------
