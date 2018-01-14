@@ -3,7 +3,6 @@ package main
 import (
 	"flag"
 	"fmt"
-	"html/template"
 	"net/http"
 	"os"
 	"os/exec"
@@ -14,7 +13,11 @@ import (
 
 	"github.com/equinox-io/equinox"
 	"github.com/gorilla/mux"
+
+	"github.com/arschles/go-bindata-html-template"
 )
+
+//go:generate go-bindata views/...
 
 //************************************************************
 //************************************************************
@@ -149,6 +152,9 @@ func myHandler(name string) http.Handler {
 
 func myRouter() *mux.Router {
 	r := mux.NewRouter()
+	r.Handle("/allprocesses", http.HandlerFunc(processesHandler))
+	r.Handle("/ngrokprocesses", http.HandlerFunc(processesNgrokHandler))
+	r.Handle("/actualdirectory", http.HandlerFunc(actualdirectoryHandler))
 	r.Handle("/api/test", http.HandlerFunc(apiTestHandler))
 	r.Handle("/api/allprocesses", http.HandlerFunc(apiAllProcessesHandler))
 	r.Handle("/api/actualdirectory", http.HandlerFunc(apiActualDirectoryHandler))
@@ -194,11 +200,12 @@ func main() {
 	defer startChecking()
 	defer runNgrok()
 
-	logger.Information("Cellarstone manager v0.3.3")
+	logger.Information("Cellarstone manager v0.3.4")
 	pid = os.Getpid()
 	pidString := strconv.Itoa(pid)
 	logger.Information("PID : " + pidString)
 
+	// NORMAL HTTP TEMPLATES
 	// files := append(layoutFiles(), "views/processes.gohtml")
 	// processes, err = template.ParseFiles(files...)
 	// if err != nil {
@@ -218,9 +225,29 @@ func main() {
 	// 	fmt.Println(err)
 	// }
 
-	go startChecking()
+	// GO-BINDATA-TEMPLATES
+	files := append(layoutFiles(), "views/processes.gohtml")
+	processes, err = template.New("processes", Asset).ParseFiles(files...)
+	if err != nil {
+		fmt.Printf("error parsing template: %s", err)
+	}
+
+	files = append(layoutFiles(), "views/processes2.gohtml")
+	processes2, err = template.New("processes2", Asset).ParseFiles(files...)
+	if err != nil {
+		fmt.Printf("error parsing template: %s", err)
+	}
+
+	files = append(layoutFiles(), "views/actualdirectory.gohtml")
+	actualDirectory, err = template.New("actualDirectory", Asset).ParseFiles(files...)
+	if err != nil {
+		fmt.Printf("error parsing template: %s", err)
+	}
+
+	//go startChecking()
 	//go runNgrok()
 
+	// FACEBOOK GO GRACE
 	// flag.Parse()
 	// gracehttp.Serve(
 	// 	&http.Server{Addr: *address0, Handler: myHandler("Web11")},
@@ -229,6 +256,7 @@ func main() {
 	// 	&http.Server{Addr: *address3, Handler: myHandler("Web44")},
 	// )
 
+	// NORMAL ROUTER
 	r := myRouter()
 	http.ListenAndServe(":10001", r)
 }
