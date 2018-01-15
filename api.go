@@ -67,7 +67,7 @@ func apiActualDirectoryHandler(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(dto)
 }
 
-func testCheckProcessWorkflowHandler(w http.ResponseWriter, r *http.Request) {
+func apiTestCheckProcessWorkflowHandler(w http.ResponseWriter, r *http.Request) {
 
 	vars := mux.Vars(r)
 	pid := vars["pid"]
@@ -85,7 +85,7 @@ func testCheckProcessWorkflowHandler(w http.ResponseWriter, r *http.Request) {
 
 }
 
-func killprocessHandler(w http.ResponseWriter, r *http.Request) {
+func apiKillprocessHandler(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	id := vars["id"]
 
@@ -98,7 +98,7 @@ func killprocessHandler(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-func dockerImagesHandler(w http.ResponseWriter, r *http.Request) {
+func apiDockerImagesHandler(w http.ResponseWriter, r *http.Request) {
 
 	// Create an *exec.Cmd
 	cmd := exec.Command("sudo", "docker", "images")
@@ -119,7 +119,7 @@ func dockerImagesHandler(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(dto)
 }
 
-func dockerPsaHandler(w http.ResponseWriter, r *http.Request) {
+func apiDockerPsaHandler(w http.ResponseWriter, r *http.Request) {
 
 	// Create an *exec.Cmd
 	cmd := exec.Command("sudo", "docker", "ps", "-a")

@@ -6,7 +6,6 @@ import (
 	"net/http"
 	"os"
 	"os/exec"
-	"path/filepath"
 	"strconv"
 	"syscall"
 	"time"
@@ -138,14 +137,17 @@ var pid = 0
 func myHandler(name string) http.Handler {
 	mux := http.NewServeMux()
 
-	mux.HandleFunc("/home", homePage)
-	mux.HandleFunc("/about", aboutPage)
+	mux.HandleFunc("/", indexHandler)
+
 	mux.HandleFunc("/allprocesses", processesHandler)
 	mux.HandleFunc("/ngrokprocesses", processesNgrokHandler)
 	mux.HandleFunc("/actualdirectory", actualdirectoryHandler)
+	mux.HandleFunc("/dockerimages", dockerimagesHandler)
+	mux.HandleFunc("/dockerpsa", dockerpsaHandler)
+
 	mux.HandleFunc("/api/allprocesses", apiAllProcessesHandler)
-	mux.HandleFunc("/api/dockerimages", dockerImagesHandler)
-	mux.HandleFunc("/api/dockerpsa", dockerPsaHandler)
+	// mux.HandleFunc("/api/dockerimages", dockerImagesHandler)
+	// mux.HandleFunc("/api/dockerpsa", dockerPsaHandler)
 	// mux.HandleFunc("/runngrok", apiRunNgrokHandler)
 
 	return mux
@@ -159,10 +161,10 @@ func myRouter() *mux.Router {
 	r.Handle("/api/test", http.HandlerFunc(apiTestHandler))
 	r.Handle("/api/allprocesses", http.HandlerFunc(apiAllProcessesHandler))
 	r.Handle("/api/actualdirectory", http.HandlerFunc(apiActualDirectoryHandler))
-	r.Handle("/api/checkprocess/{pid}", http.HandlerFunc(testCheckProcessWorkflowHandler))
-	r.Handle("/api/killprocess/{id}", http.HandlerFunc(killprocessHandler))
-	r.Handle("/api/dockerimages", http.HandlerFunc(dockerImagesHandler))
-	r.Handle("/api/dockerpsa", http.HandlerFunc(dockerPsaHandler))
+	r.Handle("/api/checkprocess/{pid}", http.HandlerFunc(apiTestCheckProcessWorkflowHandler))
+	r.Handle("/api/killprocess/{id}", http.HandlerFunc(apiKillprocessHandler))
+	r.Handle("/api/dockerimages", http.HandlerFunc(apiDockerImagesHandler))
+	r.Handle("/api/dockerpsa", http.HandlerFunc(apiDockerPsaHandler))
 	r.Handle("/api/runngrok/{port}", http.HandlerFunc(apiRunNgrokHandler))
 	return r
 }
@@ -178,9 +180,12 @@ var (
 )
 
 var layoutDir = "views/layout"
-var processes *template.Template
-var processes2 *template.Template
-var actualDirectory *template.Template
+var processesTemplate *template.Template
+var ngrokprocessesTemplate *template.Template
+var actualDirectoryTemplate *template.Template
+var indexTemplate *template.Template
+var dockerimagesTemplate *template.Template
+var dockerpsaTemplate *template.Template
 
 //Logging
 var logger *DLogger
@@ -227,25 +232,43 @@ func main() {
 	// }
 
 	// GO-BINDATA-TEMPLATES
-	files := append(layoutFiles(), "views/processes.gohtml")
-	processes, err = template.New("processes", Asset).ParseFiles(files...)
+	files := append(layoutFiles(), "views/index.gohtml")
+	indexTemplate, err = template.New("index", Asset).ParseFiles(files...)
 	if err != nil {
 		fmt.Printf("error parsing template: %s", err)
 	}
 
-	files = append(layoutFiles(), "views/processes2.gohtml")
-	processes2, err = template.New("processes2", Asset).ParseFiles(files...)
+	files = append(layoutFiles(), "views/processes.gohtml")
+	processesTemplate, err = template.New("processes", Asset).ParseFiles(files...)
+	if err != nil {
+		fmt.Printf("error parsing template: %s", err)
+	}
+
+	files = append(layoutFiles(), "views/ngrokprocesses.gohtml")
+	ngrokprocessesTemplate, err = template.New("processes2", Asset).ParseFiles(files...)
 	if err != nil {
 		fmt.Printf("error parsing template: %s", err)
 	}
 
 	files = append(layoutFiles(), "views/actualdirectory.gohtml")
-	actualDirectory, err = template.New("actualDirectory", Asset).ParseFiles(files...)
+	actualDirectoryTemplate, err = template.New("actualDirectory", Asset).ParseFiles(files...)
 	if err != nil {
 		fmt.Printf("error parsing template: %s", err)
 	}
 
-	go startChecking()
+	files = append(layoutFiles(), "views/dockerimages.gohtml")
+	dockerimagesTemplate, err = template.New("dockerimages", Asset).ParseFiles(files...)
+	if err != nil {
+		fmt.Printf("error parsing template: %s", err)
+	}
+
+	files = append(layoutFiles(), "views/dockerpsa.gohtml")
+	dockerpsaTemplate, err = template.New("dockerpsa", Asset).ParseFiles(files...)
+	if err != nil {
+		fmt.Printf("error parsing template: %s", err)
+	}
+
+	//go startChecking()
 	//go runNgrok()
 
 	// FACEBOOK GO GRACE
@@ -286,11 +309,13 @@ func runNgrok() {
 //-------------------------------------
 
 func layoutFiles() []string {
-	files, err := filepath.Glob(layoutDir + "/*.gohtml")
-	if err != nil {
-		//low-level exception logging
-		logger.Error(err.Error())
-	}
+	// files, err := filepath.Glob(layoutDir + "/*.gohtml")
+	// if err != nil {
+	// 	//low-level exception logging
+	// 	logger.Error(err.Error())
+	// }
+
+	files := []string{"views/layout/layout.gohtml"}
 	return files
 }
 

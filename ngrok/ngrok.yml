@@ -1,0 +1,8 @@
+authtoken: 6mRpb1ZoPHJ6ro1KfqAPq_4SUZciW7QnuJSNo6U9Tiy
+tunnels:
+  ssh:
+    proto: tcp
+    addr: 22
+  dashboard:
+    proto: http
+    addr: 10001

@@ -1,23 +1,153 @@
 {{define "layouttemplate"}}
-<!DOCTYPE html>  
-<html lang="en">  
-  <head>
-    <title>Cellarstone Hub - Manager</title>
-    <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
-  </head>
+<!DOCTYPE html>
+<html lang="en">
 
-  <body>
-    <h1>LAYOUT TEXT</h1>
-    <div>some layout text</div>
+<head>
+  <title>Cellarstone Hub - Manager</title>
+  <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    .navbar-brand {
+      color: blue !important;
+    }
 
+    .shell-wrap {
+      width: 100%; // margin: 100px auto 0 auto;
+      box-shadow: 0 0 30px rgba(0, 0, 0, 0.4);
+
+      -webkit-border-radius: 3px;
+      -moz-border-radius: 3px;
+      border-radius: 3px;
+    }
+
+    .shell-top-bar {
+      text-align: center;
+      color: #525252;
+      padding: 5px 0;
+      margin: 0;
+      text-shadow: 1px 1px 0 rgba(255, 255, 255, 0.5);
+      font-size: 0.85em;
+      border: 1px solid #CCCCCC;
+      border-bottom: none;
+
+      -webkit-border-top-left-radius: 3px;
+      -webkit-border-top-right-radius: 3px;
+      -moz-border-radius-topleft: 3px;
+      -moz-border-radius-topright: 3px;
+      border-top-left-radius: 3px;
+      border-top-right-radius: 3px;
+
+      background: #f7f7f7;
+      /* Old browsers */
+      background: -moz-linear-gradient(top, #f7f7f7 0%, #B8B8B8 100%);
+      /* FF3.6+ */
+      background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #f7f7f7), color-stop(100%, #B8B8B8));
+      /* Chrome,Safari4+ */
+      background: -webkit-linear-gradient(top, #f7f7f7 0%, #B8B8B8 100%);
+      /* Chrome10+,Safari5.1+ */
+      background: -o-linear-gradient(top, #f7f7f7 0%, #B8B8B8 100%);
+      /* Opera 11.10+ */
+      background: -ms-linear-gradient(top, #f7f7f7 0%, #B8B8B8 100%);
+      /* IE10+ */
+      background: linear-gradient(to bottom, #f7f7f7 0%, #B8B8B8 100%);
+      /* W3C */
+      filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#f7f7f7', endColorstr='#B8B8B8', GradientType=0);
+      /* IE6-9 */
+    }
+
+    .shell-body {
+      min-height: 400px;
+      max-height: 100%;
+      margin: 0;
+      padding: 5px;
+      list-style: none;
+      background: #141414;
+      color: #45D40C;
+      font: 0.8em 'Andale Mono', Consolas, 'Courier New';
+      line-height: 1.6em;
+
+      -webkit-border-bottom-right-radius: 3px;
+      -webkit-border-bottom-left-radius: 3px;
+      -moz-border-radius-bottomright: 3px;
+      -moz-border-radius-bottomleft: 3px;
+      border-bottom-right-radius: 3px;
+      border-bottom-left-radius: 3px;
+    }
+
+    .shell-body li:before {
+      content: '$';
+      position: absolute;
+      left: 0;
+      top: 0;
+    }
+
+    .shell-body li {
+      word-wrap: break-word;
+      position: relative;
+      padding: 0 0 0 15px;
+    }
+
+    .shell-body pre:before {
+      content: '$';
+      position: absolute;
+      left: 0;
+      top: 0;
+    }
+
+    .shell-body pre {
+      border: none;
+      background-color: #141414;
+      color: #45D40C;
+      word-wrap: break-word;
+      position: relative;
+      padding: 0 0 0 15px;
+    }
+  </style>
+</head>
+
+<body>
+  <nav class="navbar navbar-default">
     <div class="container-fluid">
-      <!-- Our content will go here. -->
-      {{template "yield" .}}
+      <div class="navbar-header">
+        <a class="navbar-brand" href="/">Cellarstone Hub Manager</a>
+      </div>
+      <ul class="nav navbar-nav">
+        <li>
+          <a href="/actualdirectory">Actual directory</a>
+        </li>
+        <li>
+          <a href="/allprocesses">All processes</a>
+        </li>
+        <li>
+          <a href="/ngrokprocesses">Ngrok processes</a>
+        </li>
+        <li>
+          <a href="/dockerimages">Docker images</a>
+        </li>
+        <li>
+          <a href="/dockerpsa">Docker ps -a</a>
+        </li>
+      </ul>
     </div>
+  </nav>
 
-    <!-- jquery & Bootstrap JS -->
-    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
-    <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-  </body>
-</html>  
+  <div class="container-fluid">
+    <!-- Our content will go here. -->
+    {{template "yield" .}}
+  </div>
+
+  <!-- jquery & Bootstrap JS -->
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+  <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+  <script>
+    $(document).ready(function () {
+      // get current URL path and assign 'active' class
+      var pathname = window.location.pathname;
+      $('.nav > li > a[href="' + pathname + '"]').parent().addClass('active');
+      console.log(pathname);
+    })
+  </script>
+</body>
+
+</html>
 {{end}}
