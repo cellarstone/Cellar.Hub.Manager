@@ -4,8 +4,17 @@ import (
 	"bytes"
 	"math/rand"
 	"net"
+	"os"
 	"time"
 )
+
+func killProcess(pid int) {
+	proc, _ := os.FindProcess(pid)
+	err := proc.Kill()
+	if err != nil {
+		logger.Error("process can't be killed > " + err.Error())
+	}
+}
 
 // getMacAddr gets the MAC hardware
 // address of the host machine

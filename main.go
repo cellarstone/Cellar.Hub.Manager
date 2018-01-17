@@ -89,12 +89,12 @@ func init() {
 
 func main() {
 	checkCellarDeviceInfo()
+	//killAllNgrokProcesses()
 
 	defer startChecking()
-	defer runNgrok("http", "10001")
-	defer runNgrok("tcp", "22")
+	defer killAllNgrokProcesses()
 
-	logger.Information("Cellarstone manager v0.3.7")
+	logger.Information("Cellarstone manager v0.3.8")
 	pid = os.Getpid()
 	pidString := strconv.Itoa(pid)
 	logger.Information("PID : " + pidString)

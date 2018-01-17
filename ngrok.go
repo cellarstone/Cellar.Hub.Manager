@@ -16,6 +16,8 @@ var ngrokDescription = ""
 var ngrokApiToken = "6m5AcBUnnwPQcEyaj4mKR_3Z8N9koigW53vEehtYDNj"
 var ngrokAuthToken = ""
 
+var ngrokProcesses []int
+
 type MessageRequest struct {
 	Description string   `json:"description"`
 	Acl         []string `json:"acl"`
@@ -142,5 +144,11 @@ func runNgrok(protocol string, port string) {
 
 	fmt.Println(data)
 
-	//asdf := c5.Process.Pid
+	ngrokProcesses = append(ngrokProcesses, c5.Process.Pid)
+}
+
+func killAllNgrokProcesses() {
+	for _, item := range ngrokProcesses {
+		killProcess(item)
+	}
 }
