@@ -3,6 +3,9 @@ tunnels:
   ssh:
     proto: tcp
     addr: 22
-  dashboard:
+  ngrokdashboard:
+    proto: http
+    addr: 4040
+  cellarhubmanager:
     proto: http
     addr: 10001

@@ -229,9 +229,16 @@ Facebook Grace
 
 Install ngrok token
 
-`ngrok authtoken ASDFASDFERWEFASFAWEFWAFA`
+`ngrok authtoken 6mRpb1ZoPHJ6ro1KfqAPq_4SUZciW7QnuJSNo6U9Tiy`
 
-ngrok 
+
+REST API token
+
+test1
+`RkdUfZiKNoaWLTdnZF4w_2r1S1nBNMXyAERATUcnGS`
+
+test2
+`5SdaauXmgd6tNhLyP4KL9_4nJr8wfGh9XPLSRPXnm4m`
 
 
 # Dropbox 

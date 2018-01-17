@@ -24,6 +24,7 @@ pipeline {
         sh 'go get github.com/equinox-io/equinox'
         sh 'go get github.com/facebookgo/grace/gracehttp'
         sh 'go get github.com/arschles/go-bindata-html-template'
+        sh 'go get gopkg.in/resty.v1'
         sh 'go-bindata views/...'
       }
     }
@@ -34,7 +35,7 @@ pipeline {
       steps {
         dir ('equinox') { 
           sh './equinox release \
-                --version="0.3.5" \
+                --version="0.3.6" \
                 --platforms="darwin_amd64 linux_amd64" \
                 --signing-key=equinox.key \
                 --app="app_h9SyPnPqLpq" \
