@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"os/exec"
+	"strconv"
 
 	resty "gopkg.in/resty.v1"
 )
@@ -144,6 +145,8 @@ func runNgrok(protocol string, port string) {
 
 	fmt.Println(data)
 
+	pidString := strconv.Itoa(c5.Process.Pid)
+	logger.Information(pidString + "_______________________" + cccmd)
 	ngrokProcesses = append(ngrokProcesses, c5.Process.Pid)
 }
 

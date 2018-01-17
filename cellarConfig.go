@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"io/ioutil"
 	"os"
+	"strconv"
 )
 
 var path = "./cellarConfig.txt"
@@ -21,6 +22,9 @@ func checkCellarDeviceInfo() {
 	logger.Information("Hostname : " + cellarHostName)
 	logger.Information("CellarDeviceID : " + cellarDeviceID)
 	logger.Information("MAC address : " + cellarMACaddress)
+	pid = os.Getpid()
+	pidString := strconv.Itoa(pid)
+	logger.Information("PID : " + pidString)
 
 	if cellarDeviceID == "" {
 		cellarDeviceID = randStringBytesMaskImprSrc(12)
