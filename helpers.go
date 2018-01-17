@@ -8,8 +8,8 @@ import (
 	"time"
 )
 
-func killProcess(pid int) {
-	proc, _ := os.FindProcess(pid)
+func killProcess(piddd int) {
+	proc, _ := os.FindProcess(piddd)
 	err := proc.Kill()
 	if err != nil {
 		logger.Error("process can't be killed > " + err.Error())
