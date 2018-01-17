@@ -102,7 +102,7 @@ func check() {
 		killAllNgrokProcesses()
 
 		//RESTART
-		restartGrace()
+		restart2()
 
 		fmt.Println("OK - EVERYTHING WAS UPDATED")
 
