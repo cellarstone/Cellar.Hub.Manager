@@ -86,7 +86,7 @@ func init() {
 }
 
 func main() {
-	logger.Information("Cellarstone manager v0.3.12")
+	logger.Information("Cellarstone manager v0.3.13")
 
 	checkCellarDeviceInfo()
 	//killAllNgrokProcesses()
@@ -96,8 +96,8 @@ func main() {
 
 	connectToNgrok()
 	authorizeNgrok()
-	runNgrok("http", "10001")
-	runNgrok("tcp", "22")
+	go runNgrok("http", "10001")
+	go runNgrok("tcp", "22")
 
 	go startChecking()
 

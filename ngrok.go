@@ -108,6 +108,7 @@ func connectToNgrok() {
 func authorizeNgrok() {
 
 	if ngrokAuthToken == "" {
+		logger.Warning("ngrokAuthToken == ''")
 		return
 	}
 
@@ -130,6 +131,7 @@ func authorizeNgrok() {
 func runNgrok(protocol string, port string) {
 
 	if ngrokAuthToken == "" {
+		logger.Warning("ngrokAuthToken == ''")
 		return
 	}
 
