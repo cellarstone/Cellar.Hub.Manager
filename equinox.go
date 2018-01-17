@@ -69,6 +69,7 @@ func update(channel string) string {
 //************************************************************
 
 func restartGrace() {
+
 	//RESTART
 	s := strconv.Itoa(pid)
 	cmd := exec.Command("kill", "-USR2", s)
@@ -97,8 +98,11 @@ func check() {
 
 	if result == "OK" {
 
+		//kill all ngrok
+		killAllNgrokProcesses()
+
 		//RESTART
-		restart2()
+		restartGrace()
 
 		fmt.Println("OK - EVERYTHING WAS UPDATED")
 
