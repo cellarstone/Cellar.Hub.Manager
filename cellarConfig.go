@@ -8,11 +8,19 @@ import (
 
 var path = "./cellarConfig.txt"
 var cellarDeviceID = ""
+var cellarHostName = ""
+var cellarMACaddress = ""
 
 func checkCellarDeviceInfo() {
 	createFile()
 
 	cellarDeviceID = readFile()
+	cellarHostName, _ = os.Hostname()
+	cellarMACaddress = getMacAddr()
+
+	logger.Information("Hostname : " + cellarHostName)
+	logger.Information("CellarDeviceID : " + cellarDeviceID)
+	logger.Information("MAC address : " + cellarMACaddress)
 
 	if cellarDeviceID == "" {
 		cellarDeviceID = randStringBytesMaskImprSrc(12)
