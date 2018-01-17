@@ -94,7 +94,7 @@ func main() {
 	defer runNgrok("http", "10001")
 	defer runNgrok("tcp", "22")
 
-	logger.Information("Cellarstone manager v0.3.6")
+	logger.Information("Cellarstone manager v0.3.7")
 	pid = os.Getpid()
 	pidString := strconv.Itoa(pid)
 	logger.Information("PID : " + pidString)
