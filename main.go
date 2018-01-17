@@ -92,7 +92,7 @@ func main() {
 	//killAllNgrokProcesses()
 
 	defer startChecking()
-	//defer killAllNgrokProcesses()
+	defer killAllNgrokProcesses()
 
 	connectToNgrok()
 	authorizeNgrok()
