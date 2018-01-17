@@ -16,3 +16,4 @@ output/
 
 cellarConfig.txt
 bindata.go
+debug

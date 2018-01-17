@@ -3,7 +3,6 @@ package main
 import (
 	"encoding/json"
 	"fmt"
-	"os"
 	"os/exec"
 
 	resty "gopkg.in/resty.v1"
@@ -68,11 +67,8 @@ func checkIfDeviceExists(name string) string {
 }
 
 func connectToNgrok() {
-	//Get Information about this machine
-	hostname, _ := os.Hostname()
-	macaddress := getMacAddr()
 
-	deviceName := hostname + " - " + cellarDeviceID + " - " + macaddress
+	deviceName := cellarHostName + " - " + cellarDeviceID + " - " + cellarMACaddress
 
 	authtoken := checkIfDeviceExists(deviceName)
 

@@ -8,6 +8,7 @@ import (
 )
 
 type cellarDTO struct {
+	Hostname      string      `json:"hostname"`
 	ExceptionText string      `json:"exceptionText"`
 	Data          interface{} `json:"data"`
 }
@@ -18,7 +19,14 @@ type cellarDTO struct {
 // }
 
 func indexHandler(w http.ResponseWriter, r *http.Request) {
-	indexTemplate.ExecuteTemplate(w, "layouttemplate", nil)
+
+	dto := cellarDTO{
+		Hostname:      cellarHostName,
+		ExceptionText: "",
+		Data:          "",
+	}
+
+	indexTemplate.ExecuteTemplate(w, "layouttemplate", dto)
 }
 
 func processesHandler(w http.ResponseWriter, r *http.Request) {
@@ -35,6 +43,7 @@ func processesHandler(w http.ResponseWriter, r *http.Request) {
 
 	dataFormatted := strings.Split(data, "\n")
 	dto := cellarDTO{
+		Hostname:      cellarHostName,
 		ExceptionText: "",
 		Data:          dataFormatted,
 	}
@@ -90,6 +99,7 @@ func processesNgrokHandler(w http.ResponseWriter, r *http.Request) {
 	dataFormatted := strings.Split(data, "\n")
 
 	dto := cellarDTO{
+		Hostname:      cellarHostName,
 		ExceptionText: "",
 		Data:          dataFormatted,
 	}
@@ -115,6 +125,7 @@ func actualdirectoryHandler(w http.ResponseWriter, r *http.Request) {
 	dataFormatted := strings.Split(cmdOutText, "\n")
 
 	dto := cellarDTO{
+		Hostname:      cellarHostName,
 		ExceptionText: "",
 		Data:          dataFormatted,
 	}
@@ -139,6 +150,7 @@ func dockerimagesHandler(w http.ResponseWriter, r *http.Request) {
 
 	dataFormatted := strings.Split(data, "\n")
 	dto := cellarDTO{
+		Hostname:      cellarHostName,
 		ExceptionText: "",
 		Data:          dataFormatted,
 	}
@@ -162,6 +174,7 @@ func dockerpsaHandler(w http.ResponseWriter, r *http.Request) {
 
 	dataFormatted := strings.Split(data, "\n")
 	dto := cellarDTO{
+		Hostname:      cellarHostName,
 		ExceptionText: "",
 		Data:          dataFormatted,
 	}
