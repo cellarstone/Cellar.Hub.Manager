@@ -146,12 +146,14 @@ func runNgrok(protocol string, port string) {
 	fmt.Println(data)
 
 	pidString := strconv.Itoa(c5.Process.Pid)
-	logger.Information(pidString + "_______________________" + cccmd)
+	logger.Information("run Ngrok process : " + pidString + "_______________________" + cccmd)
 	ngrokProcesses = append(ngrokProcesses, c5.Process.Pid)
 }
 
 func killAllNgrokProcesses() {
 	for _, item := range ngrokProcesses {
+		pidString := strconv.Itoa(item)
+		logger.Information("killing Ngrok process : " + pidString)
 		killProcess(item)
 	}
 }
