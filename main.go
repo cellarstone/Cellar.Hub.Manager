@@ -86,13 +86,13 @@ func init() {
 }
 
 func main() {
-	logger.Information("Cellarstone manager v0.3.9")
+	logger.Information("Cellarstone manager v0.3.10")
 
 	checkCellarDeviceInfo()
 	//killAllNgrokProcesses()
 
 	defer startChecking()
-	defer killAllNgrokProcesses()
+	//defer killAllNgrokProcesses()
 
 	connectToNgrok()
 	authorizeNgrok()
