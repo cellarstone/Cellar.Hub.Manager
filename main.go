@@ -4,8 +4,6 @@ import (
 	"flag"
 	"fmt"
 	"net/http"
-	"os"
-	"strconv"
 
 	"github.com/facebookgo/grace/gracehttp"
 
@@ -88,16 +86,13 @@ func init() {
 }
 
 func main() {
+	logger.Information("Cellarstone manager v0.3.9")
+
 	checkCellarDeviceInfo()
 	//killAllNgrokProcesses()
 
 	defer startChecking()
 	defer killAllNgrokProcesses()
-
-	logger.Information("Cellarstone manager v0.3.8")
-	pid = os.Getpid()
-	pidString := strconv.Itoa(pid)
-	logger.Information("PID : " + pidString)
 
 	connectToNgrok()
 	authorizeNgrok()
