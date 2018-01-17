@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"net/http"
 
-	"github.com/facebookgo/grace/gracehttp"
+	"github.com/gorilla/mux"
 
 	"github.com/arschles/go-bindata-html-template"
 )
@@ -36,21 +36,23 @@ func myHandler(name string) http.Handler {
 	return mux
 }
 
-// func myRouter() *mux.Router {
-// 	r := mux.NewRouter()
-// 	r.Handle("/allprocesses", http.HandlerFunc(processesHandler))
-// 	r.Handle("/ngrokprocesses", http.HandlerFunc(processesNgrokHandler))
-// 	r.Handle("/actualdirectory", http.HandlerFunc(actualdirectoryHandler))
-// 	r.Handle("/api/test", http.HandlerFunc(apiTestHandler))
-// 	r.Handle("/api/allprocesses", http.HandlerFunc(apiAllProcessesHandler))
-// 	r.Handle("/api/actualdirectory", http.HandlerFunc(apiActualDirectoryHandler))
-// 	r.Handle("/api/checkprocess/{pid}", http.HandlerFunc(apiTestCheckProcessWorkflowHandler))
-// 	r.Handle("/api/killprocess/{id}", http.HandlerFunc(apiKillprocessHandler))
-// 	r.Handle("/api/dockerimages", http.HandlerFunc(apiDockerImagesHandler))
-// 	r.Handle("/api/dockerpsa", http.HandlerFunc(apiDockerPsaHandler))
-// 	r.Handle("/api/runngrok/{port}", http.HandlerFunc(apiRunNgrokHandler))
-// 	return r
-// }
+func myRouter() *mux.Router {
+	r := mux.NewRouter()
+	r.Handle("/allprocesses", http.HandlerFunc(processesHandler))
+	r.Handle("/ngrokprocesses", http.HandlerFunc(processesNgrokHandler))
+	r.Handle("/actualdirectory", http.HandlerFunc(actualdirectoryHandler))
+	r.Handle("/dockerimages", http.HandlerFunc(dockerimagesHandler))
+	r.Handle("/dockerpsa", http.HandlerFunc(dockerpsaHandler))
+	// r.Handle("/api/test", http.HandlerFunc(apiTestHandler))
+	// r.Handle("/api/allprocesses", http.HandlerFunc(apiAllProcessesHandler))
+	// r.Handle("/api/actualdirectory", http.HandlerFunc(apiActualDirectoryHandler))
+	// r.Handle("/api/checkprocess/{pid}", http.HandlerFunc(apiTestCheckProcessWorkflowHandler))
+	// r.Handle("/api/killprocess/{id}", http.HandlerFunc(apiKillprocessHandler))
+	// r.Handle("/api/dockerimages", http.HandlerFunc(apiDockerImagesHandler))
+	// r.Handle("/api/dockerpsa", http.HandlerFunc(apiDockerPsaHandler))
+	// r.Handle("/api/runngrok/{port}", http.HandlerFunc(apiRunNgrokHandler))
+	return r
+}
 
 //************************************************************
 //************************************************************
@@ -86,7 +88,7 @@ func init() {
 }
 
 func main() {
-	logger.Information("Cellarstone manager v0.3.14")
+	logger.Information("Cellarstone manager v0.3.15")
 
 	checkCellarDeviceInfo()
 	//killAllNgrokProcesses()
@@ -159,18 +161,17 @@ func main() {
 	}
 
 	// FACEBOOK GO GRACE
-	flag.Parse()
-	gracehttp.Serve(
-		&http.Server{Addr: *address0, Handler: myHandler("Web11")},
-		&http.Server{Addr: *address1, Handler: myHandler("Web22")},
-		&http.Server{Addr: *address2, Handler: myHandler("Web33")},
-		&http.Server{Addr: *address3, Handler: myHandler("Web44")},
-	)
+	// flag.Parse()
+	// gracehttp.Serve(
+	// 	&http.Server{Addr: *address0, Handler: myHandler("Web11")},
+	// 	&http.Server{Addr: *address1, Handler: myHandler("Web22")},
+	// 	&http.Server{Addr: *address2, Handler: myHandler("Web33")},
+	// 	&http.Server{Addr: *address3, Handler: myHandler("Web44")},
+	// )
 
 	// NORMAL ROUTER
-	// r := myRouter()
-	// http.ListenAndServe(":10001", r)
-
+	r := myRouter()
+	http.ListenAndServe(":10001", r)
 }
 
 //-------------------------------------
