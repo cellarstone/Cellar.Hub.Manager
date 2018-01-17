@@ -9,6 +9,68 @@ Ubuntu 16.04
 
 Docker CE
 
+## Ngrok link
+
+Install ngrok
+```Shell
+sudo ./ngrok service install --config=./ngrok.yml
+```
+
+Config for ngrok
+```Yaml
+authtoken: 6mRpb1ZoPHJ6ro1KfqAPq_4SUZciW7QnuJSNo6U9Tiy
+tunnels:
+  ssh:
+    proto: tcp
+    addr: 22
+  dashboard:
+    proto: http
+    addr: 10001
+```
+
+Start service
+```Shell
+sudo ./ngrok service start
+```
+
+
+Stop service
+```Shell
+sudo ./ngrok service stop
+```
+
+
+Restart service
+```Shell
+sudo ./ngrok service restart
+```
+
+
+Uninstall service
+```Shell
+sudo ./ngrok service uninstall
+```
+
+### Status
+
+http://localhost:4040/status
+
+
+List of service
+```Shell
+ps -ef | grep ngrok
+```
+
+```Shell
+sudo systemctl -a
+```
+
+```Shell
+service ngrok status
+```
+
+
+
 ## Deamon service - systemd
 
 Always-running process by systemd
@@ -167,9 +229,16 @@ Facebook Grace
 
 Install ngrok token
 
-`ngrok authtoken ASDFASDFERWEFASFAWEFWAFA`
+`ngrok authtoken 6mRpb1ZoPHJ6ro1KfqAPq_4SUZciW7QnuJSNo6U9Tiy`
 
-ngrok 
+
+REST API token
+
+test1
+`RkdUfZiKNoaWLTdnZF4w_2r1S1nBNMXyAERATUcnGS`
+
+test2
+`5SdaauXmgd6tNhLyP4KL9_4nJr8wfGh9XPLSRPXnm4m`
 
 
 # Dropbox 

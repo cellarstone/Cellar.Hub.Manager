@@ -1,11 +1,16 @@
 {{define "yield"}}
 
-  <h1>Processes</h1>  
- 
-  {{range .Data}} 
-    <div class="container"> 
-        {{.}}
-    </div>  
-  {{end}}
+  <div class="shell-wrap">
+      <p class="shell-top-bar">$bin/bash</p>
+      <ul class="shell-body">
+
+        {{range .Data}} 
+          <li> 
+              {{.}}
+          </li>  
+        {{end}}
+
+      </ul>
+  </div>
 
 {{end}}

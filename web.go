@@ -17,14 +17,8 @@ type cellarDTO struct {
 // 	fmt.Println("Endpoint Hit: other1Page")
 // }
 
-func homePage(w http.ResponseWriter, r *http.Request) {
-	fmt.Fprintf(w, "Welcome to the HomeePage! :-) ")
-	fmt.Println("Endpoint Hit: homeePage")
-}
-
-func aboutPage(w http.ResponseWriter, r *http.Request) {
-	fmt.Fprintf(w, "Welcome to the AboutPage! :-) ")
-	fmt.Println("Endpoint Hit: aboutPage")
+func indexHandler(w http.ResponseWriter, r *http.Request) {
+	indexTemplate.ExecuteTemplate(w, "layouttemplate", nil)
 }
 
 func processesHandler(w http.ResponseWriter, r *http.Request) {
@@ -45,9 +39,9 @@ func processesHandler(w http.ResponseWriter, r *http.Request) {
 		Data:          dataFormatted,
 	}
 
-	logger.Information(data)
+	// logger.Information(data)
 
-	processes.ExecuteTemplate(w, "layouttemplate", dto)
+	processesTemplate.ExecuteTemplate(w, "layouttemplate", dto)
 }
 
 func processesNgrokHandler(w http.ResponseWriter, r *http.Request) {
@@ -93,15 +87,16 @@ func processesNgrokHandler(w http.ResponseWriter, r *http.Request) {
 		logger.Error(err.Error())
 	}
 	data := printOutput(c5)
+	dataFormatted := strings.Split(data, "\n")
 
 	dto := cellarDTO{
 		ExceptionText: "",
-		Data:          data,
+		Data:          dataFormatted,
 	}
 
-	logger.Information(data)
+	// logger.Information(data)
 
-	processes2.ExecuteTemplate(w, "layouttemplate", dto)
+	ngrokprocessesTemplate.ExecuteTemplate(w, "layouttemplate", dto)
 }
 
 func actualdirectoryHandler(w http.ResponseWriter, r *http.Request) {
@@ -124,9 +119,56 @@ func actualdirectoryHandler(w http.ResponseWriter, r *http.Request) {
 		Data:          dataFormatted,
 	}
 
-	logger.Information(cmdOutText)
+	// logger.Information(cmdOutText)
+	// logger.Information(actualDirectory.Name())
 
-	actualDirectory.ExecuteTemplate(w, "layouttemplate", dto)
+	actualDirectoryTemplate.ExecuteTemplate(w, "layouttemplate", dto)
+}
+
+func dockerimagesHandler(w http.ResponseWriter, r *http.Request) {
+
+	// Create an *exec.Cmd
+	cmd := exec.Command("docker", "images")
+
+	// Combine stdout and stderr
+	output, err := cmd.CombinedOutput()
+	if err != nil {
+		fmt.Println(err.Error())
+	}
+	data := printOutput(output)
+
+	dataFormatted := strings.Split(data, "\n")
+	dto := cellarDTO{
+		ExceptionText: "",
+		Data:          dataFormatted,
+	}
+
+	// logger.Information(data)
+
+	dockerimagesTemplate.ExecuteTemplate(w, "layouttemplate", dto)
+}
+
+func dockerpsaHandler(w http.ResponseWriter, r *http.Request) {
+
+	// Create an *exec.Cmd
+	cmd := exec.Command("docker", "ps", "-a")
+
+	// Combine stdout and stderr
+	output, err := cmd.CombinedOutput()
+	if err != nil {
+		fmt.Println(err.Error())
+	}
+	data := printOutput(output)
+
+	dataFormatted := strings.Split(data, "\n")
+	dto := cellarDTO{
+		ExceptionText: "",
+		Data:          dataFormatted,
+	}
+
+	// logger.Information(data)
+
+	dockerpsaTemplate.ExecuteTemplate(w, "layouttemplate", dto)
 }
 
 // func updatePage(w http.ResponseWriter, r *http.Request) {
