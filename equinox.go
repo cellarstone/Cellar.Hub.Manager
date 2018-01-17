@@ -98,7 +98,7 @@ func check() {
 	if result == "OK" {
 
 		//RESTART
-		restartGrace()
+		restart2()
 
 		fmt.Println("OK - EVERYTHING WAS UPDATED")
 
