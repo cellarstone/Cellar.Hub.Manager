@@ -108,7 +108,7 @@
   <nav class="navbar navbar-default">
     <div class="container-fluid">
       <div class="navbar-header">
-        <a class="navbar-brand" href="/">Cellarstone Hub Manager - {{.Hostname}}</a>
+        <a class="navbar-brand" href="/">{{.Hostname}} - {{.Version}}</a>
       </div>
       <ul class="nav navbar-nav">
         <li>
@@ -125,6 +125,12 @@
         </li>
         <li>
           <a href="/dockerpsa">Docker ps -a</a>
+        </li>
+        <li>
+          <a href="/hubprocesses">Hub processes</a>
+        </li>
+        <li>
+          <a href="/hubsystemd">Hub systemd</a>
         </li>
       </ul>
     </div>

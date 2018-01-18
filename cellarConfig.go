@@ -7,6 +7,11 @@ import (
 	"strconv"
 )
 
+//*****************************************************
+// VERSION
+//*****************************************************
+var cellarVersion = "v0.3.26"
+
 var path = "./cellarConfig.txt"
 var cellarDeviceID = ""
 var cellarHostName = ""

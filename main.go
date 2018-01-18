@@ -1,7 +1,6 @@
 package main
 
 import (
-	"flag"
 	"fmt"
 	"net/http"
 
@@ -17,24 +16,24 @@ import (
 
 var pid = 0
 
-func myHandler(name string) http.Handler {
-	mux := http.NewServeMux()
+// func myHandler(name string) http.Handler {
+// 	mux := http.NewServeMux()
 
-	mux.HandleFunc("/", indexHandler)
+// 	mux.HandleFunc("/", indexHandler)
 
-	mux.HandleFunc("/allprocesses", processesHandler)
-	mux.HandleFunc("/ngrokprocesses", processesNgrokHandler)
-	mux.HandleFunc("/actualdirectory", actualdirectoryHandler)
-	mux.HandleFunc("/dockerimages", dockerimagesHandler)
-	mux.HandleFunc("/dockerpsa", dockerpsaHandler)
+// 	mux.HandleFunc("/allprocesses", processesHandler)
+// 	mux.HandleFunc("/ngrokprocesses", processesNgrokHandler)
+// 	mux.HandleFunc("/actualdirectory", actualdirectoryHandler)
+// 	mux.HandleFunc("/dockerimages", dockerimagesHandler)
+// 	mux.HandleFunc("/dockerpsa", dockerpsaHandler)
 
-	mux.HandleFunc("/api/allprocesses", apiAllProcessesHandler)
-	// mux.HandleFunc("/api/dockerimages", dockerImagesHandler)
-	// mux.HandleFunc("/api/dockerpsa", dockerPsaHandler)
-	// mux.HandleFunc("/runngrok", apiRunNgrokHandler)
+// 	mux.HandleFunc("/api/allprocesses", apiAllProcessesHandler)
+// 	// mux.HandleFunc("/api/dockerimages", dockerImagesHandler)
+// 	// mux.HandleFunc("/api/dockerpsa", dockerPsaHandler)
+// 	// mux.HandleFunc("/runngrok", apiRunNgrokHandler)
 
-	return mux
-}
+// 	return mux
+// }
 
 func myRouter() *mux.Router {
 	r := mux.NewRouter()
@@ -44,6 +43,8 @@ func myRouter() *mux.Router {
 	r.Handle("/actualdirectory", http.HandlerFunc(actualdirectoryHandler))
 	r.Handle("/dockerimages", http.HandlerFunc(dockerimagesHandler))
 	r.Handle("/dockerpsa", http.HandlerFunc(dockerpsaHandler))
+	r.Handle("/hubprocesses", http.HandlerFunc(hubprocessesHandler))
+	r.Handle("/hubsystemd", http.HandlerFunc(hubsystemdHandler))
 	// r.Handle("/api/test", http.HandlerFunc(apiTestHandler))
 	// r.Handle("/api/allprocesses", http.HandlerFunc(apiAllProcessesHandler))
 	// r.Handle("/api/actualdirectory", http.HandlerFunc(apiActualDirectoryHandler))
@@ -58,12 +59,12 @@ func myRouter() *mux.Router {
 //************************************************************
 //************************************************************
 
-var (
-	address0 = flag.String("a00", ":10001", "Web1 address to bind to.")
-	address1 = flag.String("a11", ":10002", "Web2 address to bind to.")
-	address2 = flag.String("a22", ":10003", "Web3 address to bind to.")
-	address3 = flag.String("a33", ":10004", "Web4 address to bind to.")
-)
+// var (
+// 	address0 = flag.String("a00", ":10001", "Web1 address to bind to.")
+// 	address1 = flag.String("a11", ":10002", "Web2 address to bind to.")
+// 	address2 = flag.String("a22", ":10003", "Web3 address to bind to.")
+// 	address3 = flag.String("a33", ":10004", "Web4 address to bind to.")
+// )
 
 var layoutDir = "views/layout"
 var processesTemplate *template.Template
@@ -72,6 +73,8 @@ var actualDirectoryTemplate *template.Template
 var indexTemplate *template.Template
 var dockerimagesTemplate *template.Template
 var dockerpsaTemplate *template.Template
+var cellarhubprocessesTemplate *template.Template
+var cellarhubsystemdTemplate *template.Template
 
 //Logging
 var logger *DLogger
@@ -89,7 +92,7 @@ func init() {
 }
 
 func main() {
-	logger.Information("Cellarstone manager v0.3.24")
+	logger.Information("Cellarstone manager " + cellarVersion)
 
 	checkCellarDeviceInfo()
 	//killAllNgrokProcesses()
@@ -102,7 +105,7 @@ func main() {
 	go runNgrok("http", "10001")
 	go runNgrok("tcp", "22")
 
-	go startChecking()
+	//go startChecking()
 
 	// NORMAL HTTP TEMPLATES
 	// files := append(layoutFiles(), "views/processes.gohtml")
@@ -157,6 +160,18 @@ func main() {
 
 	files = append(layoutFiles(), "views/dockerpsa.gohtml")
 	dockerpsaTemplate, err = template.New("dockerpsa", Asset).ParseFiles(files...)
+	if err != nil {
+		fmt.Printf("error parsing template: %s", err)
+	}
+
+	files = append(layoutFiles(), "views/cellarhubprocesses.gohtml")
+	cellarhubprocessesTemplate, err = template.New("cellarhubprocesses", Asset).ParseFiles(files...)
+	if err != nil {
+		fmt.Printf("error parsing template: %s", err)
+	}
+
+	files = append(layoutFiles(), "views/cellarhubsystemd.gohtml")
+	cellarhubsystemdTemplate, err = template.New("cellarhubsystemd", Asset).ParseFiles(files...)
 	if err != nil {
 		fmt.Printf("error parsing template: %s", err)
 	}
