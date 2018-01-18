@@ -81,7 +81,7 @@ https://fabianlee.org/2017/05/21/golang-running-a-go-binary-as-a-systemd-service
 ```Shell
 [Unit]
 Description=Cellar.Hub.Manager service
-ConditionPathExists=/home/Apps/Cellar.Hub.Manager
+ConditionPathExists=/home/cellarstone/Apps/Cellar.Hub.Manager
 After=network.target
 
 [Service]
@@ -94,8 +94,8 @@ Restart=on-failure
 RestartSec=10
 startLimitIntervalSec=60
 
-WorkingDirectory=/home/Apps/Cellar.Hub.Manager
-ExecStart=/home/Apps/Cellar.Hub.Manager/cellarhubmanager
+WorkingDirectory=/home/cellarstone/Apps/Cellar.Hub.Manager
+ExecStart=/home/cellarstone/Apps/Cellar.Hub.Manager/cellarhubmanager
 
 # make sure log directory exists and owned by syslog
 PermissionsStartOnly=true
