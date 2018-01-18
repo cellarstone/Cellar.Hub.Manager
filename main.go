@@ -38,6 +38,7 @@ func myHandler(name string) http.Handler {
 
 func myRouter() *mux.Router {
 	r := mux.NewRouter()
+	r.Handle("/", http.HandlerFunc(indexHandler))
 	r.Handle("/allprocesses", http.HandlerFunc(processesHandler))
 	r.Handle("/ngrokprocesses", http.HandlerFunc(processesNgrokHandler))
 	r.Handle("/actualdirectory", http.HandlerFunc(actualdirectoryHandler))
