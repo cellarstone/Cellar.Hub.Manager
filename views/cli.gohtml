@@ -1,0 +1,26 @@
+{{define "yield"}}
+
+    <form action="#" method="post">
+        <div class="form-group">
+            <label for="command">Address</label>
+            <input type="text" class="form-control" id="command" name="command" placeholder="Enter your command ... ">
+        </div>
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
+
+
+
+  <div class="shell-wrap">
+      <p class="shell-top-bar">$bin/bash</p>
+      <ul class="shell-body">
+
+        {{range .Data}} 
+          <li> 
+              {{.}}
+          </li>  
+        {{end}}
+
+      </ul>
+  </div>
+
+{{end}}
