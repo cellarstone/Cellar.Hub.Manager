@@ -18,3 +18,4 @@ cellarConfig.txt
 bindata.go
 debug
 Cellar.Hub.Manager
+Cellar.Hub.Manager*
