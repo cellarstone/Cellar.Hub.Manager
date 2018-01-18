@@ -184,6 +184,51 @@ func dockerpsaHandler(w http.ResponseWriter, r *http.Request) {
 	dockerpsaTemplate.ExecuteTemplate(w, "layouttemplate", dto)
 }
 
+func hubprocessesHandler(w http.ResponseWriter, r *http.Request) {
+
+	cccmd := "ps -ef | grep cellarhub"
+	c5, err := exec.Command("bash", "-c", cccmd).Output()
+	if err != nil {
+		logger.Error(err.Error())
+	}
+	data := printOutput(c5)
+	dataFormatted := strings.Split(data, "\n")
+
+	dto := cellarDTO{
+		Hostname:      cellarHostName,
+		ExceptionText: "",
+		Data:          dataFormatted,
+	}
+
+	// logger.Information(data)
+
+	cellarhubprocessesTemplate.ExecuteTemplate(w, "layouttemplate", dto)
+}
+
+func hubsystemdHandler(w http.ResponseWriter, r *http.Request) {
+
+	// Create an *exec.Cmd
+	cmd := exec.Command("service", "cellarhubmanager", "status")
+
+	// Combine stdout and stderr
+	output, err := cmd.CombinedOutput()
+	if err != nil {
+		fmt.Println(err.Error())
+	}
+	data := printOutput(output)
+
+	dataFormatted := strings.Split(data, "\n")
+	dto := cellarDTO{
+		Hostname:      cellarHostName,
+		ExceptionText: "",
+		Data:          dataFormatted,
+	}
+
+	// logger.Information(data)
+
+	cellarhubsystemdTemplate.ExecuteTemplate(w, "layouttemplate", dto)
+}
+
 // func updatePage(w http.ResponseWriter, r *http.Request) {
 // 	fmt.Fprintf(w, "Welcome to the Update! :-) ")
 // 	update("stable")
