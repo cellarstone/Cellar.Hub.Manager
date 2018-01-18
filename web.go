@@ -9,6 +9,9 @@ import (
 
 type cellarDTO struct {
 	Hostname      string      `json:"hostname"`
+	Version       string      `json:"version"`
+	DeviceID      string      `json:"deviceid"`
+	MACaddress    string      `json:"macaddress"`
 	ExceptionText string      `json:"exceptionText"`
 	Data          interface{} `json:"data"`
 }
@@ -22,6 +25,9 @@ func indexHandler(w http.ResponseWriter, r *http.Request) {
 
 	dto := cellarDTO{
 		Hostname:      cellarHostName,
+		Version:       cellarVersion,
+		DeviceID:      cellarDeviceID,
+		MACaddress:    cellarMACaddress,
 		ExceptionText: "",
 		Data:          "",
 	}
@@ -44,6 +50,7 @@ func processesHandler(w http.ResponseWriter, r *http.Request) {
 	dataFormatted := strings.Split(data, "\n")
 	dto := cellarDTO{
 		Hostname:      cellarHostName,
+		Version:       cellarVersion,
 		ExceptionText: "",
 		Data:          dataFormatted,
 	}
@@ -100,6 +107,7 @@ func processesNgrokHandler(w http.ResponseWriter, r *http.Request) {
 
 	dto := cellarDTO{
 		Hostname:      cellarHostName,
+		Version:       cellarVersion,
 		ExceptionText: "",
 		Data:          dataFormatted,
 	}
@@ -126,6 +134,7 @@ func actualdirectoryHandler(w http.ResponseWriter, r *http.Request) {
 
 	dto := cellarDTO{
 		Hostname:      cellarHostName,
+		Version:       cellarVersion,
 		ExceptionText: "",
 		Data:          dataFormatted,
 	}
@@ -151,6 +160,7 @@ func dockerimagesHandler(w http.ResponseWriter, r *http.Request) {
 	dataFormatted := strings.Split(data, "\n")
 	dto := cellarDTO{
 		Hostname:      cellarHostName,
+		Version:       cellarVersion,
 		ExceptionText: "",
 		Data:          dataFormatted,
 	}
@@ -175,6 +185,7 @@ func dockerpsaHandler(w http.ResponseWriter, r *http.Request) {
 	dataFormatted := strings.Split(data, "\n")
 	dto := cellarDTO{
 		Hostname:      cellarHostName,
+		Version:       cellarVersion,
 		ExceptionText: "",
 		Data:          dataFormatted,
 	}
@@ -196,6 +207,7 @@ func hubprocessesHandler(w http.ResponseWriter, r *http.Request) {
 
 	dto := cellarDTO{
 		Hostname:      cellarHostName,
+		Version:       cellarVersion,
 		ExceptionText: "",
 		Data:          dataFormatted,
 	}
@@ -220,6 +232,7 @@ func hubsystemdHandler(w http.ResponseWriter, r *http.Request) {
 	dataFormatted := strings.Split(data, "\n")
 	dto := cellarDTO{
 		Hostname:      cellarHostName,
+		Version:       cellarVersion,
 		ExceptionText: "",
 		Data:          dataFormatted,
 	}
