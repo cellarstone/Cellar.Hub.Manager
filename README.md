@@ -5,6 +5,14 @@
 
 Ubuntu 16.04
 
+### User 
+
+Username : Cellarstone
+
+Password : Cllrs123IoT456
+
+Add Sudo rights : `usermod -aG sudo Cellarstone`
+
 ## Docker
 
 Docker CE
@@ -76,6 +84,7 @@ service ngrok status
 Always-running process by systemd
 https://fabianlee.org/2017/05/21/golang-running-a-go-binary-as-a-systemd-service-on-ubuntu-16-04/
 
+### Create config file
 `sudo gedit /lib/systemd/system/cellarhubmanager.service`
 
 ```Shell
@@ -110,52 +119,12 @@ SyslogIdentifier=cellarhubmanager
 WantedBy=multi-user.target
 ```
 
-### Systemclt way commands
+### Start and monitor service
 
-Enable a service as daemon service
+Enable service (connect config file with systemd)
 
 ```Shell
 sudo systemctl enable cellarhubmanager.service
-```
-
-Service start
-
-```Shell
-sudo systemctl start cellarhubmanager
-```
-
-
-
-Restart a service
-
-```Shell
-sudo systemctl restart cellarhubmanager
-```
-
-
-List of all service by systemd
-
-```Shell
-sudo systemctl -a
-```
-
-
-
-Tail the log
-
-```Shell
-sudo journalctl -f -u cellarhubmanager
-```
-
-
-
-### Service way commands
-
-
-Enable a service as daemon service - ??? work ???
-
-```Shell
-service cellarhubmanager enable   
 ```
 
 Service status - GREAT !!!
@@ -174,6 +143,35 @@ Service restart
 
 ```Shell
 service cellarhubmanager restart
+```
+
+
+
+
+### Systemclt way commands
+
+Service start
+
+```Shell
+sudo systemctl start cellarhubmanager
+```
+
+Restart a service
+
+```Shell
+sudo systemctl restart cellarhubmanager
+```
+
+List of all service by systemd
+
+```Shell
+sudo systemctl -a
+```
+
+Tail the log
+
+```Shell
+sudo journalctl -f -u cellarhubmanager
 ```
 
 
