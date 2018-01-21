@@ -18,6 +18,9 @@ type cellarDTO struct {
 
 func indexHandler(w http.ResponseWriter, r *http.Request) {
 
+	checkRunningNgrok("http", "10001")
+	checkRunningNgrok("tcp", "22")
+
 	dto := cellarDTO{
 		Hostname:      cellarHostName,
 		Version:       cellarVersion,
@@ -32,14 +35,9 @@ func indexHandler(w http.ResponseWriter, r *http.Request) {
 
 func processesNgrokHandler(w http.ResponseWriter, r *http.Request) {
 
-	cccmd := "ps -ef | grep ngrok"
-	c5, err := exec.Command("bash", "-c", cccmd).Output()
-	if err != nil {
-		logger.Error(err.Error())
-	}
-	data := printOutput(c5)
-	dataFormatted := strings.Split(data, "\n")
+	data := cmd_filterProcesses("ngrok")
 
+	dataFormatted := strings.Split(data, "\n")
 	dto := cellarDTO{
 		Hostname:      cellarHostName,
 		Version:       cellarVersion,
@@ -54,15 +52,7 @@ func processesNgrokHandler(w http.ResponseWriter, r *http.Request) {
 
 func dockerimagesHandler(w http.ResponseWriter, r *http.Request) {
 
-	// Create an *exec.Cmd
-	cmd := exec.Command("docker", "images")
-
-	// Combine stdout and stderr
-	output, err := cmd.CombinedOutput()
-	if err != nil {
-		fmt.Println(err.Error())
-	}
-	data := printOutput(output)
+	data := cmd_dockerimages()
 
 	dataFormatted := strings.Split(data, "\n")
 	dto := cellarDTO{
@@ -79,15 +69,7 @@ func dockerimagesHandler(w http.ResponseWriter, r *http.Request) {
 
 func dockerpsaHandler(w http.ResponseWriter, r *http.Request) {
 
-	// Create an *exec.Cmd
-	cmd := exec.Command("docker", "ps", "-a")
-
-	// Combine stdout and stderr
-	output, err := cmd.CombinedOutput()
-	if err != nil {
-		fmt.Println(err.Error())
-	}
-	data := printOutput(output)
+	data := cmd_dockerpsa()
 
 	dataFormatted := strings.Split(data, "\n")
 	dto := cellarDTO{
@@ -104,14 +86,9 @@ func dockerpsaHandler(w http.ResponseWriter, r *http.Request) {
 
 func hubprocessesHandler(w http.ResponseWriter, r *http.Request) {
 
-	cccmd := "ps -ef | grep cellarhub"
-	c5, err := exec.Command("bash", "-c", cccmd).Output()
-	if err != nil {
-		logger.Error(err.Error())
-	}
-	data := printOutput(c5)
-	dataFormatted := strings.Split(data, "\n")
+	data := cmd_filterProcesses("cellarhub")
 
+	dataFormatted := strings.Split(data, "\n")
 	dto := cellarDTO{
 		Hostname:      cellarHostName,
 		Version:       cellarVersion,
@@ -126,15 +103,7 @@ func hubprocessesHandler(w http.ResponseWriter, r *http.Request) {
 
 func hubsystemdHandler(w http.ResponseWriter, r *http.Request) {
 
-	// Create an *exec.Cmd
-	cmd := exec.Command("service", "cellarhubmanager", "status")
-
-	// Combine stdout and stderr
-	output, err := cmd.CombinedOutput()
-	if err != nil {
-		fmt.Println(err.Error())
-	}
-	data := printOutput(output)
+	data := cmd_hubmanagerstatus()
 
 	dataFormatted := strings.Split(data, "\n")
 	dto := cellarDTO{

@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"os/exec"
 	"strconv"
+	"strings"
 
 	resty "gopkg.in/resty.v1"
 )
@@ -150,6 +151,34 @@ func runNgrok(protocol string, port string) {
 	pidString := strconv.Itoa(c5.Process.Pid)
 	fmt.Println("run Ngrok process : " + pidString + "_______________________" + cccmd)
 	ngrokProcesses = append(ngrokProcesses, c5.Process.Pid)
+}
+
+func checkRunningNgrok(protocol string, port string) bool {
+	data := cmd_filterProcesses("ngrok")
+
+	dataFormatted := strings.Split(data, "\n")
+
+	for _, line := range dataFormatted {
+
+		itt := strings.Split(line, "./ngrok/ngrok")
+		if len(itt) > 1 {
+
+			ittt := itt[1]
+			vals := strings.Split(ittt, " ")
+
+			temp_protocol := vals[1]
+			temp_port := vals[2]
+
+			// fmt.Println(temp_protocol)
+			// fmt.Println(temp_port)
+
+			if temp_protocol == protocol && temp_port == port {
+				return true
+			}
+		}
+	}
+
+	return false
 }
 
 func killAllNgrokProcesses() {
