@@ -1,7 +1,5 @@
 {{define "yield"}}
 
-<div>HOME</div>
-
 <table class="table">
     <thead>
       <tr>
@@ -21,10 +19,21 @@
       <tr>
         <td>DeviceID</td>
         <td>{{.DeviceID}}</td>
+      <tr>
+        <td>IP address</td>
+        <td>{{.IPaddress}}</td>
       </tr>
       <tr>
         <td>MAC address</td>
         <td>{{.MACaddress}}</td>
+      </tr>
+      <tr>
+        <td>MachineID</td>
+        <td>{{.MachineID}}</td>
+      </tr>
+      <tr>
+        <td>Device Hardware</td>
+        <td>{{.DeviceHardware}}</td>
       </tr>
     </tbody>
   </table>

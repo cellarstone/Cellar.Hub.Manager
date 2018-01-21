@@ -8,12 +8,15 @@ import (
 )
 
 type cellarDTO struct {
-	Hostname      string      `json:"hostname"`
-	Version       string      `json:"version"`
-	DeviceID      string      `json:"deviceid"`
-	MACaddress    string      `json:"macaddress"`
-	ExceptionText string      `json:"exceptionText"`
-	Data          interface{} `json:"data"`
+	Hostname       string      `json:"hostname"`
+	Version        string      `json:"version"`
+	DeviceID       string      `json:"deviceid"`
+	IPaddress      string      `json:"ipaddress"`
+	MACaddress     string      `json:"macaddress"`
+	MachineID      string      `json:"machineid"`
+	DeviceHardware string      `json:"devicehardware"`
+	ExceptionText  string      `json:"exceptionText"`
+	Data           interface{} `json:"data"`
 }
 
 func indexHandler(w http.ResponseWriter, r *http.Request) {
@@ -22,12 +25,15 @@ func indexHandler(w http.ResponseWriter, r *http.Request) {
 	checkRunningNgrok("tcp", "22")
 
 	dto := cellarDTO{
-		Hostname:      cellarHostName,
-		Version:       cellarVersion,
-		DeviceID:      cellarDeviceID,
-		MACaddress:    cellarMACaddress,
-		ExceptionText: "",
-		Data:          "",
+		Hostname:       cellarHostName,
+		Version:        cellarVersion,
+		DeviceID:       cellarDeviceID,
+		IPaddress:      cellarIPaddress,
+		MACaddress:     cellarMACaddress,
+		MachineID:      cellarMachineID,
+		DeviceHardware: cellarDeviceHardware,
+		ExceptionText:  "",
+		Data:           "",
 	}
 
 	indexTemplate.ExecuteTemplate(w, "layouttemplate", dto)

@@ -17,9 +17,11 @@ Add Docker rights : `usermod -aG docker Cellarstone`
 
 ## Docker
 
-Docker CE
+Docker CE 
 
-## Google cloud
+and enable Docker Swarm with command `docker swarm init`
+
+## Google Cloud
 
 Add into path `/home/cellarstone/Apps/GoogleCloudKeys/cellarhubmanager` file `GoogleCloud-cellarhubmanager.json`
 
@@ -35,105 +37,11 @@ and add this row at the end of file
 
 ## Ngrok link
 
-Install ngrok
-```Shell
-sudo ./ngrok service install --config=./ngrok.yml
-```
-
-Config for ngrok
-```Yaml
-authtoken: 6mRpb1ZoPHJ6ro1KfqAPq_4SUZciW7QnuJSNo6U9Tiy
-tunnels:
-  ssh:
-    proto: tcp
-    addr: 22
-  dashboard:
-    proto: http
-    addr: 10001
-```
-
-Start service
-```Shell
-sudo ./ngrok service start
-```
-
-
-Stop service
-```Shell
-sudo ./ngrok service stop
-```
-
-
-Restart service
-```Shell
-sudo ./ngrok service restart
-```
-
-
-Uninstall service
-```Shell
-sudo ./ngrok service uninstall
-```
-
-
-
-Install ngrok token
-
-`ngrok authtoken 6mRpb1ZoPHJ6ro1KfqAPq_4SUZciW7QnuJSNo6U9Tiy`
-
-
-REST API token
-
-test1
-`RkdUfZiKNoaWLTdnZF4w_2r1S1nBNMXyAERATUcnGS`
-
-test2
-`5SdaauXmgd6tNhLyP4KL9_4nJr8wfGh9XPLSRPXnm4m`
-
-
-
-### Status
-
-http://localhost:4040/status
-
-
-List of service
-```Shell
-ps -ef | grep ngrok
-```
-
-```Shell
-sudo systemctl -a
-```
-
-```Shell
-service ngrok status
-```
-
+All necessary will be deliver with app itself.
 
 ## Equinox
 
-
-Equinox-io
- - automated creation of cross platform binaries
- - automated downloading new binaries from cloud storage
- - same author as ngrok
- - https://github.com/equinox-io
-
-
-
-Equinox.io 
-
-```Shell
-./equinox release \
-  --version="0.3.4" \
-  --platforms="darwin_amd64 linux_amd64" \
-  --signing-key=equinox.key \
-  --app="app_h9SyPnPqLpq" \
-  --token="fHeN81JECeiVAxoiJfEyPxBGSdMnBxVjsxZffG7wrHgEvwqJshuF" \
-  ../
-```
-
+All necessary will be deliver with app itself.
 
 
 ## Cellarhubmanager - Deamon service - systemd 
@@ -231,14 +139,6 @@ Tail the log
 sudo journalctl -f -u cellarhubmanager
 ```
 
-
-### Other commands
-
-List of the service process
-
-```Shell
-ps -ef | grep cellarhubmanager
-```
 
 
 # Cellarstone Cloud

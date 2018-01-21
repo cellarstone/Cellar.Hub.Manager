@@ -11,13 +11,16 @@ import (
 //*****************************************************
 // VERSION
 //*****************************************************
-var cellarVersion = "v0.4.2"
+var cellarVersion = "0.4.2"
 var cellarDeviceInfo = ""
 
 var path = "./cellarConfig.txt"
 var cellarDeviceID = ""
 var cellarHostName = ""
 var cellarMACaddress = ""
+var cellarIPaddress = ""
+
+// var cellarIPaddressOutside = ""
 var cellarMachineID = ""
 var cellarDeviceHardware = ""
 var cellarHubManagerPID = 0
@@ -39,6 +42,8 @@ func checkCellarDeviceInfo() {
 	cellarHostName, _ = os.Hostname()
 	cellarMACaddress = getMacAddr()
 	cellarMachineID = getMachineID()
+	// cellarIPaddressOutside = GetOutboundIP()
+	cellarIPaddress = GetLocalIP()
 	cellarDeviceHardware = getCpuInfo()
 	cellarDeviceHardware += getHDDInfo()
 	cellarDeviceHardware += getNetworkInfo()
@@ -48,6 +53,8 @@ func checkCellarDeviceInfo() {
 	logger.Information("CellarDeviceID : " + cellarDeviceID)
 	logger.Information("Hostname : " + cellarHostName)
 	logger.Information("MAC address : " + cellarMACaddress)
+	logger.Information("IP address : " + cellarIPaddress)
+	// logger.Information("IP out address : " + cellarIPaddressOutside)
 	logger.Information("MachineID : " + cellarMachineID)
 	logger.Information("PID : " + pidString)
 	logger.Information("Hardware : " + cellarDeviceHardware)
@@ -56,6 +63,8 @@ func checkCellarDeviceInfo() {
 	cellarDeviceInfo += fmt.Sprintf("%v\n", cellarDeviceID)
 	cellarDeviceInfo += fmt.Sprintf("%v\n", cellarHostName)
 	cellarDeviceInfo += fmt.Sprintf("%v\n", cellarMACaddress)
+	cellarDeviceInfo += fmt.Sprintf("%v\n", cellarIPaddress)
+	// cellarDeviceInfo += fmt.Sprintf("%v\n", cellarIPaddressOutside)
 	cellarDeviceInfo += fmt.Sprintf("%v\n", cellarMachineID)
 	cellarDeviceInfo += fmt.Sprintf("%v\n", pidString)
 	cellarDeviceInfo += fmt.Sprintf("%v\n", cellarDeviceHardware)
