@@ -117,7 +117,7 @@ func main() {
 		go runNgrok("tcp", "22")
 	}
 
-	//go startChecking()
+	go startChecking()
 
 	// NORMAL HTTP TEMPLATES
 	// files := append(layoutFiles(), "views/processes.gohtml")
