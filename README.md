@@ -3,19 +3,35 @@
 
 ## OS
 
-Ubuntu 16.04
+Ubuntu 16.04 LTS
 
 ### User 
 
-Username : Cellarstone
+Username : cellarstone
 
 Password : Cllrs123IoT456
 
 Add Sudo rights : `usermod -aG sudo Cellarstone`
 
+Add Docker rights : `usermod -aG docker Cellarstone`
+
 ## Docker
 
 Docker CE
+
+## Google cloud
+
+Add into path `/home/cellarstone/Apps/GoogleCloudKeys/cellarhubmanager` file `GoogleCloud-cellarhubmanager.json`
+
+Set environment variable `GOOGLE_APPLICATION_CREDENTIALS` by editing `.bashrc` user file. Use this command 
+
+```Shell
+gedit /home/cellarstone/.bashrc
+```
+
+and add this row at the end of file
+
+`export GOOGLE_APPLICATION_CREDENTIALS="/home/cellarstone/Apps/GoogleCloudKeys/cellarhubmanager/GoogleCloud-cellarhubmanager.json"`
 
 ## Ngrok link
 
@@ -59,6 +75,23 @@ Uninstall service
 sudo ./ngrok service uninstall
 ```
 
+
+
+Install ngrok token
+
+`ngrok authtoken 6mRpb1ZoPHJ6ro1KfqAPq_4SUZciW7QnuJSNo6U9Tiy`
+
+
+REST API token
+
+test1
+`RkdUfZiKNoaWLTdnZF4w_2r1S1nBNMXyAERATUcnGS`
+
+test2
+`5SdaauXmgd6tNhLyP4KL9_4nJr8wfGh9XPLSRPXnm4m`
+
+
+
 ### Status
 
 http://localhost:4040/status
@@ -78,8 +111,32 @@ service ngrok status
 ```
 
 
+## Equinox
 
-## Deamon service - systemd
+
+Equinox-io
+ - automated creation of cross platform binaries
+ - automated downloading new binaries from cloud storage
+ - same author as ngrok
+ - https://github.com/equinox-io
+
+
+
+Equinox.io 
+
+```Shell
+./equinox release \
+  --version="0.3.4" \
+  --platforms="darwin_amd64 linux_amd64" \
+  --signing-key=equinox.key \
+  --app="app_h9SyPnPqLpq" \
+  --token="fHeN81JECeiVAxoiJfEyPxBGSdMnBxVjsxZffG7wrHgEvwqJshuF" \
+  ../
+```
+
+
+
+## Cellarhubmanager - Deamon service - systemd 
 
 Always-running process by systemd
 https://fabianlee.org/2017/05/21/golang-running-a-go-binary-as-a-systemd-service-on-ubuntu-16-04/
@@ -184,68 +241,16 @@ ps -ef | grep cellarhubmanager
 ```
 
 
-# Libraries
-
-Equinox-io
- - automated creation of cross platform binaries
- - automated downloading new binaries from cloud storage
- - same author as ngrok
- - https://github.com/equinox-io
-
-Facebook Grace
- - Graceful restart for Golang webserver
- - https://github.com/facebookgo/grace
-
-
-
-# Unique Id
-
-Hub ID - UNIQUE ID for whole world
- - it is tied up with user account
-
-
-# Self-updating program
-
-Equinox.io 
-
-```Shell
-./equinox release \
-  --version="0.3.4" \
-  --platforms="darwin_amd64 linux_amd64" \
-  --signing-key=equinox.key \
-  --app="app_h9SyPnPqLpq" \
-  --token="fHeN81JECeiVAxoiJfEyPxBGSdMnBxVjsxZffG7wrHgEvwqJshuF" \
-  ../
-```
-
-# Graceful restart - without blackout
-
-Facebook Grace
-
-
-# Expose device to ngrok
-
-Install ngrok token
-
-`ngrok authtoken 6mRpb1ZoPHJ6ro1KfqAPq_4SUZciW7QnuJSNo6U9Tiy`
-
-
-REST API token
-
-test1
-`RkdUfZiKNoaWLTdnZF4w_2r1S1nBNMXyAERATUcnGS`
-
-test2
-`5SdaauXmgd6tNhLyP4KL9_4nJr8wfGh9XPLSRPXnm4m`
-
-
-# Dropbox 
-
-for unhandled situation
-
-
-
-# Connection to the Cellarstone Cloud
+# Cellarstone Cloud
 
 Hub is connected to the Cloud and sending status data each minute.
 
+
+## Cloud Storage
+
+check newer version of docker-stack.yml
+
+## PubSub
+
+PUBLISH      - (each hour) send info about device (cellarDeviceID, cellarHostName, cellarMACaddress,  Wifi, IP ... etc.)
+PUBLISH      - (each minute) send status message

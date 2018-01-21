@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"net/http"
+	"time"
 
 	"github.com/gorilla/mux"
 
@@ -13,8 +14,6 @@ import (
 
 //************************************************************
 //************************************************************
-
-var pid = 0
 
 // func myHandler(name string) http.Handler {
 // 	mux := http.NewServeMux()
@@ -86,6 +85,17 @@ func init() {
 	}
 }
 
+func startChecking() {
+	for {
+		time.Sleep(1 * time.Minute)
+		checkEquinox()
+		checkDockerStackFile()
+
+		//google cloud
+		sendDeviceInfo()
+	}
+}
+
 func main() {
 	logger.Information("Cellarstone manager " + cellarVersion)
 
@@ -96,8 +106,16 @@ func main() {
 
 	connectToNgrok()
 	authorizeNgrok()
-	go runNgrok("http", "10001")
-	go runNgrok("tcp", "22")
+
+	isAlreadyRunning := checkRunningNgrok("http", "10001")
+	if !isAlreadyRunning {
+		go runNgrok("http", "10001")
+	}
+
+	isAlreadyRunning = checkRunningNgrok("tcp", "22")
+	if !isAlreadyRunning {
+		go runNgrok("tcp", "22")
+	}
 
 	//go startChecking()
 

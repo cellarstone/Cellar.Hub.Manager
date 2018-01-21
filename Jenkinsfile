@@ -25,6 +25,10 @@ pipeline {
         sh 'go get github.com/facebookgo/grace/gracehttp'
         sh 'go get github.com/arschles/go-bindata-html-template'
         sh 'go get gopkg.in/resty.v1'
+        sh 'go get cloud.google.com/go/storage'
+        sh 'go get cloud.google.com/go/pubsub'
+        sh 'go get golang.org/x/net/context'
+        sh 'go get github.com/jaypipes/ghw'
         sh 'go-bindata views/...'
       }
     }
@@ -35,7 +39,7 @@ pipeline {
       steps {
         dir ('equinox') { 
           sh './equinox release \
-                --version="0.3.27" \
+                --version="0.4.1" \
                 --platforms="darwin_amd64 linux_amd64" \
                 --signing-key=equinox.key \
                 --app="app_h9SyPnPqLpq" \

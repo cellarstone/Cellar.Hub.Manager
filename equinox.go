@@ -6,16 +6,9 @@ import (
 	"os/exec"
 	"strconv"
 	"syscall"
-	"time"
 
 	"github.com/equinox-io/equinox"
 )
-
-//************************************************************
-//************************************************************
-//************************************************************
-//************************************************************
-// EQUINOX
 
 const appID = "app_h9SyPnPqLpq"
 
@@ -28,6 +21,38 @@ oklmhuQ8MWisY3cQNpNHFstFc1DjDu29/vQYo2ckurYpf7OOjAStPL4qb+3WSFOR
 gfj0W1ovPzXas/+elnyuZumyZ1KMJWgL
 -----END ECDSA PUBLIC KEY-----
 `)
+
+func checkEquinox() {
+
+	result := update("stable")
+
+	if result == "OK" {
+
+		//kill all ngrok
+		killAllNgrokProcesses()
+
+		//RESTART
+		restartBrute()
+
+		fmt.Println("OK - EVERYTHING WAS UPDATED")
+
+	} else if result == "NO_UPDATES" {
+
+		fmt.Println("OK - EVERYTHING UP TO DATE")
+
+	} else {
+
+		fmt.Println("STRANGE")
+
+	}
+
+}
+
+//************************************************************
+//************************************************************
+//************************************************************
+//************************************************************
+// EQUINOX
 
 func update(channel string) string {
 
@@ -70,11 +95,11 @@ func update(channel string) string {
 
 func restartGrace() {
 
-	text := "PID : " + strconv.Itoa(pid) + " -------------------------------------------------------- "
+	text := "PID : " + strconv.Itoa(cellarHubManagerPID) + " -------------------------------------------------------- "
 	fmt.Println(text)
 
 	//RESTART
-	s := strconv.Itoa(pid)
+	s := strconv.Itoa(cellarHubManagerPID)
 	cmd := exec.Command("kill", "-USR2", s)
 
 	// Combine stdout and stderr
@@ -85,45 +110,12 @@ func restartGrace() {
 	fmt.Println(output)
 }
 func restart() {
-	syscall.Kill(-pid, syscall.SIGKILL)
+	syscall.Kill(-cellarHubManagerPID, syscall.SIGKILL)
 }
-func restart2() {
-	proc, _ := os.FindProcess(pid)
+func restartBrute() {
+	proc, _ := os.FindProcess(cellarHubManagerPID)
 	err := proc.Kill()
 	if err != nil {
 		logger.Error("process can't be killed > " + err.Error())
-	}
-}
-
-func check() {
-
-	result := update("stable")
-
-	if result == "OK" {
-
-		//kill all ngrok
-		killAllNgrokProcesses()
-
-		//RESTART
-		restart2()
-
-		fmt.Println("OK - EVERYTHING WAS UPDATED")
-
-	} else if result == "NO_UPDATES" {
-
-		fmt.Println("OK - EVERYTHING UP TO DATE")
-
-	} else {
-
-		fmt.Println("STRANGE")
-
-	}
-
-}
-
-func startChecking() {
-	for {
-		time.Sleep(1 * time.Minute)
-		check()
 	}
 }

@@ -1,0 +1,12 @@
+{
+  "type": "service_account",
+  "project_id": "cellarstone-1488228226623",
+  "private_key_id": "ac81a2572c7779034edfd176f9edb97666433042",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvgIBADANBgkqhkiG9w0BAQEFAASCBKgwggSkAgEAAoIBAQCmt3UIKQimHoDR\nqBtmdnV+pKYJtA8pqCEWFkTz+DFwuvg0hrRvUW+GNj5knIstCxETAi2NjI0M8LMA\nIp5JYfzjNnCHf7pS07J57kXWPQT9xVXkyFHE+z5Ze0I3eIuZ2xraKj2/aNYStFBZ\nV8OV5A1JrA8Ben3tBIl++i/pCUQtO/5NDZuBoPueAbnHPjbRMAsf/A3y8fqmSFIy\n65/bpna2KgaAZSUDTYpgW88Ki6hXk/LxfXfu/15yyf5JrGzEooq9ttScR0ThStY1\nPKzMweNlfQkeUQAAApDQPPYTBkySK0irWNJImq8yjkWQPFFL6tGBY+DPG3yTp6ee\n85xJyGJTAgMBAAECggEAFtrys94wPdnTripeK0NVIzn+OzlQlNTkSEtgQ5QEbyBq\ns4S+Cr6+y8b28cMWP2QTgKgdR5j7o0kCOSQF0CibSyjk72Z+zCkSgC2+rDqsSv/5\nIQanUxpgd1LzBnjDpqGHgl4lHe8I3gKTO1RRT2S2v6FTY1AAIHStRteUpt1q18p3\njP0RPacY1YmvQ3he1JkPhDoQ8zdjrmEaNQwNzST9S5VWlZd8PHPlqfAAT8Lny5dL\n5oIbvfkAZ9Sx5weLT/R4FPtfdG+CCcgIqL7yz4qcTbtt5Q8BSd0FXMsp+RbYnkF5\noUcimEE3eBP4R/spjk0lMlrq1b6qEzSTxymAwPBruQKBgQDUp3cBiJE7CoZBkLsi\nsPxrMKO/nGDeJEhqCCJItWy3oRfMefjjxVo65JsXyRuTYkRClE+l0G5ra5VjC+iZ\neFK97YCmlF05B57uJ2wPLpme200L2FRYGoGR+Wa1YuRlJoev6UXtwtbQNtHx9MVX\nzdavbT3z/W5OzOJfInw3Vh+x2QKBgQDIsut9yVqP9lqxhfK4zhJ7yGCxOykgj3u1\nccVIz7mn0LYhfoG+bhYgUS3Ehq9kkblM5g/EaWXBskcXkPtV07DOIBvW3+y2D/MZ\nZZJmA1Nlp1ux3ZqSPsPn8y/trd9SrnB/MTSIa50Kz+25X48JSw4mSA9hm/6lnBGa\nf3qLlzTuCwKBgACooCK+FI0VREMxupKp7645UViHmHk3rY2+hrSo8zRCaHt2qUGz\nW8sw6BYTxmUXedSm9vQxiBYHGEhdQhQvnjn+YVaiwQMrNd/Q+XG2mD04uq1dty0q\nr9oO5rWLH9/8VZFC7LeG0fmFIfNY6b+S4KZcdUOrNktCMTVQOwhE2QZJAoGBALdD\nAVvbt/FK7+e4OznbGe+juf872UMdIcY9+/qPi6ScJSMShGCh31xlJBiXL6LymbSJ\nQw6De2JSay4uugHWClU95o3f7SMWD1I6eGLkWIuzNTyF8PXnkDXFzxcGNK0oEhti\nj+id80mDMjyZ8F95BJOaK0ljCzSn/T8JdpnuWWufAoGBALaMgW7INKrihfklr5Op\nNUf8YaTFGT1/oZ6JWc9hmVdiC7ITU4yJkhCWTQNOaUrF4t0zuFx1Y9vwspu5JMTC\n1k782lnue7wc2353OerEmKThpBhHBeEmOn7ZXfoZoJkr/lCVbvWdSUIT/iDywAbX\nB9pAduYqDs3fPDDPdMbSN9KT\n-----END PRIVATE KEY-----\n",
+  "client_email": "cellarhubmanager2@cellarstone-1488228226623.iam.gserviceaccount.com",
+  "client_id": "113672043681686285396",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://accounts.google.com/o/oauth2/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/cellarhubmanager2%40cellarstone-1488228226623.iam.gserviceaccount.com"
+}
