@@ -40,7 +40,7 @@ pipeline {
         dir ('equinox') { 
           sh './equinox release \
                 --version="0.4.1" \
-                --platforms="darwin_amd64 linux_amd64" \
+                --platforms="linux_amd64" \
                 --signing-key=equinox.key \
                 --app="app_h9SyPnPqLpq" \
                 --token="fHeN81JECeiVAxoiJfEyPxBGSdMnBxVjsxZffG7wrHgEvwqJshuF" \
