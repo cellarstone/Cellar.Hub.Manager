@@ -39,14 +39,14 @@ func checkDockerStackFile() {
 		// list buckets from the project
 		data, err := read(client, "cellarhub-dockerstack-files", "docker-stack.yml")
 		if err != nil {
-			log.Fatalf("Cannot read object: %v", err)
+			fmt.Printf("Cannot read object: %v", err)
 		}
 		fmt.Printf("Object contents: %s\n", data)
 
 		//Write to file
 		err2 := ioutil.WriteFile("./docker-stack.yml", data, 0644)
 		if err2 != nil {
-			log.Fatalf("cannor write into file: %v", err2)
+			fmt.Printf("cannor write into file: %v", err2)
 		}
 
 	}

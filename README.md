@@ -70,30 +70,15 @@ https://fabianlee.org/2017/05/21/golang-running-a-go-binary-as-a-systemd-service
 ```Shell
 [Unit]
 Description=Cellar.Hub.Manager service
-ConditionPathExists=/home/cellarstone/Apps/Cellar.Hub.Manager
-After=network.target
 
 [Service]
 Type=simple
-User=root
-Group=root
-LimitNOFILE=1024
-
-Restart=on-failure
-RestartSec=10
-startLimitIntervalSec=60
-
+User=cellarstone
+Group=sudo
 WorkingDirectory=/home/cellarstone/Apps/Cellar.Hub.Manager
 ExecStart=/home/cellarstone/Apps/Cellar.Hub.Manager/cellarhubmanager
-
-# make sure log directory exists and owned by syslog
-PermissionsStartOnly=true
-ExecStartPre=/bin/mkdir -p /var/log/echoservice
-ExecStartPre=/bin/chown syslog:adm /var/log/echoservice
-ExecStartPre=/bin/chmod 755 /var/log/echoservice
-StandardOutput=syslog
-StandardError=syslog
-SyslogIdentifier=cellarhubmanager
+Restart=always
+Environment=GOOGLE_APPLICATION_CREDENTIALS=/home/cellarstone/Apps/GoogleCloudKeys/cellarhubmanager/GoogleCloud-cellarhubmanager.json
 
 [Install]
 WantedBy=multi-user.target
@@ -128,7 +113,35 @@ service cellarhubmanager restart
 
 
 
+
+
+
+# Cellarstone Cloud
+
+Hub is connected to the Cloud and sending status data each minute.
+
+
+## Cloud Storage
+
+check newer version of docker-stack.yml
+
+## PubSub
+
+PUBLISH      - (each hour) send info about device (cellarDeviceID, cellarHostName, cellarMACaddress,  Wifi, IP ... etc.)
+PUBLISH      - (each minute) send status message
+
+
+# Useful commands
+
+## Cellarhubmanager logs
+
+```Shell
+journalctl -u cellarhubmanager
+```
+
+
 ### Systemclt way commands
+
 
 Service start
 
@@ -153,19 +166,3 @@ Tail the log
 ```Shell
 sudo journalctl -f -u cellarhubmanager
 ```
-
-
-
-# Cellarstone Cloud
-
-Hub is connected to the Cloud and sending status data each minute.
-
-
-## Cloud Storage
-
-check newer version of docker-stack.yml
-
-## PubSub
-
-PUBLISH      - (each hour) send info about device (cellarDeviceID, cellarHostName, cellarMACaddress,  Wifi, IP ... etc.)
-PUBLISH      - (each minute) send status message
