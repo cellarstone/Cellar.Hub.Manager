@@ -113,6 +113,11 @@ func authorizeNgrok() {
 		return
 	}
 
+	if ngrokAuthToken == "ERROR" {
+		logger.Warning("ngrokAuthToken == 'ERROR'")
+		return
+	}
+
 	cccmd := "./ngrok/ngrok authtoken " + ngrokAuthToken
 
 	fmt.Println(cccmd)
