@@ -25,15 +25,11 @@ func sendDeviceInfo() {
 func CreateTopicIfNotExist() {
 	ctx := context.Background()
 
-	fmt.Println("TEST11")
-
 	// Creates a client.
 	client, err := pubsub.NewClient(ctx, googleCloudProjectID)
 	if err != nil {
 		fmt.Printf("Failed to create client: %v", err)
 	}
-
-	fmt.Println("TEST22")
 
 	// Sets the name for the new topic.
 	googleCloudPubsubTopic = "cellarDevice_" + cellarDeviceID
@@ -46,15 +42,11 @@ func CreateTopicIfNotExist() {
 	}
 	if !ok {
 
-		fmt.Println("TEST33")
-
 		// Creates the new topic.
 		topic, err := client.CreateTopic(ctx, googleCloudPubsubTopic)
 		if err != nil {
 			fmt.Printf("Failed to create topic: %v", err)
 		}
-
-		fmt.Println("TEST44")
 
 		fmt.Printf("Topic %v created.\n", topic)
 	}
@@ -64,14 +56,10 @@ func CreateTopicIfNotExist() {
 func Publish(message string) {
 	ctx := context.Background()
 
-	fmt.Println("TEST55")
-
 	client, err := pubsub.NewClient(ctx, googleCloudProjectID)
 	if err != nil {
 		fmt.Printf("Failed to create client: %v", err)
 	}
-
-	fmt.Println("TEST66")
 
 	topic := client.Topic(googleCloudPubsubTopic)
 	defer topic.Stop()
@@ -88,6 +76,4 @@ func Publish(message string) {
 		}
 		fmt.Printf("Published a message with a message ID: %s\n", id)
 	}
-
-	fmt.Println("TEST77")
 }
