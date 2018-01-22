@@ -72,10 +72,15 @@ var dockerpsaTemplate *template.Template
 var cellarhubprocessesTemplate *template.Template
 var cellarhubsystemdTemplate *template.Template
 var cliTemplate *template.Template
+var dockerStackTemplate *template.Template
 
 //Logging
 var logger *DLogger
 var err error
+
+//Docker Stack updated
+
+var lastUpdated time.Time
 
 func init() {
 	//set logging
@@ -83,6 +88,8 @@ func init() {
 	if err != nil {
 		panic(err)
 	}
+
+	lastUpdated = time.Now().AddDate(-1, 0, 0)
 }
 
 func startChecking() {
@@ -178,6 +185,12 @@ func main() {
 
 	files = append(layoutFiles(), "views/cli.gohtml")
 	cliTemplate, err = template.New("cli", Asset).ParseFiles(files...)
+	if err != nil {
+		fmt.Printf("error parsing template: %s", err)
+	}
+
+	files = append(layoutFiles(), "views/dockerstack.gohtml")
+	dockerStackTemplate, err = template.New("dockerstack", Asset).ParseFiles(files...)
 	if err != nil {
 		fmt.Printf("error parsing template: %s", err)
 	}

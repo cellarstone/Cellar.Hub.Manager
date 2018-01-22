@@ -1,0 +1,474 @@
+version: '3.4'
+
+services:
+
+# PROXY ***************************
+
+  cellar-hub-proxy:
+    image: cellarstone/cellar.hub.proxy:0.0.2
+    deploy:
+      replicas: 1
+      update_config:
+        parallelism: 2
+        delay: 5s
+        order: stop-first
+      restart_policy:
+        condition: on-failure
+        delay: 5s
+        max_attempts: 3
+        window: 120s
+    ports:
+      - 8080:8080
+      - 8081:8081
+
+# CORE ***************************
+
+  cellar-hub-core-web:
+    image: cellarstone/cellar.hub.core.web:0.0.2
+    deploy:
+      replicas: 1
+      update_config:
+        parallelism: 2
+        delay: 5s
+        order: stop-first
+      restart_policy:
+        condition: on-failure
+        delay: 5s
+        max_attempts: 3
+        window: 120s
+    logging:
+      driver: "fluentd"
+      options:
+        fluentd-address: localhost:24224
+        tag: docker.cellar.hub.core.web
+    ports:
+    - "44401:44401"
+
+  cellar-hub-core-admin:
+    image: cellarstone/cellar.hub.core.admin:0.0.2
+    deploy:
+      replicas: 1
+      update_config:
+        parallelism: 2
+        delay: 5s
+        order: stop-first
+      restart_policy:
+        condition: on-failure
+        delay: 5s
+        max_attempts: 3
+        window: 120s
+    logging:
+      driver: "fluentd"
+      options:
+        fluentd-address: localhost:24224
+        tag: docker.cellar.hub.core.admin
+    ports:
+    - "44402:44402"
+
+  cellar-hub-core-api:
+    image: cellarstone/cellar.hub.core.api:0.0.2
+    deploy:
+      replicas: 1
+      update_config:
+        parallelism: 2
+        delay: 5s
+        order: stop-first
+      restart_policy:
+        condition: on-failure
+        delay: 5s
+        max_attempts: 3
+        window: 120s
+    logging:
+      driver: "fluentd"
+      options:
+        fluentd-address: localhost:24224
+        tag: docker.cellar.hub.core.api
+    ports:
+    - "44403:44403"
+
+  cellar-hub-core-cdn:
+    image: cellarstone/cellar.hub.core.cdn:0.0.2
+    deploy:
+      replicas: 1
+      update_config:
+        parallelism: 2
+        delay: 5s
+        order: stop-first
+      restart_policy:
+        condition: on-failure
+        delay: 5s
+        max_attempts: 3
+        window: 120s
+    logging:
+      driver: "fluentd"
+      options:
+        fluentd-address: localhost:24224
+        tag: docker.cellar.hub.core.cdn
+    volumes:
+     - /data/cellarstone.hub/core/cdn:/app/data
+    ports:
+    - "44404:44404"
+    
+
+  cellar-hub-core-workflow:
+    image: cellarstone/cellar.hub.core.workflow:0.0.2
+    deploy:
+      replicas: 1
+      update_config:
+        parallelism: 2
+        delay: 5s
+        order: stop-first
+      restart_policy:
+        condition: on-failure
+        delay: 5s
+        max_attempts: 3
+        window: 120s
+    logging:
+      driver: "fluentd"
+      options:
+        fluentd-address: localhost:24224
+        tag: docker.cellar.hub.core.workflow
+    ports:
+      - "44405:44405"
+
+  cellar-hub-core-websockets:
+    image: cellarstone/cellar.hub.core.websockets:0.0.2
+    deploy:
+      replicas: 1
+      update_config:
+        parallelism: 2
+        delay: 5s
+        order: stop-first
+      restart_policy:
+        condition: on-failure
+        delay: 5s
+        max_attempts: 3
+        window: 120s
+    logging:
+      driver: "fluentd"
+      options:
+        fluentd-address: localhost:24224
+        tag: docker.cellar.hub.core.websockets
+    ports:
+    - "44406:44406"
+
+
+
+# CORE - Third party ***************************
+
+# don't rename to the cellar.hub.** pattern
+# some stuffs with elaticsearch require the simple name pattern
+
+# MONGO DB ----------------
+  mongodb:
+    image: cellarstone/cellar.hub.mongodb:0.0.2
+    deploy:
+      replicas: 1
+      update_config:
+        parallelism: 2
+        delay: 5s
+        order: stop-first
+      restart_policy:
+        condition: on-failure
+        delay: 5s
+        max_attempts: 3
+        window: 120s
+    volumes:
+     - /data/cellarstone.hub/core/mongodb:/data/db
+    ports:
+    - "27017:27017"
+
+# MQTT ----------------
+  mqtt:
+    image: cellarstone/cellar.hub.mqtt:0.0.2
+    deploy:
+      replicas: 1
+      update_config:
+        parallelism: 2
+        delay: 5s
+        order: stop-first
+      restart_policy:
+        condition: on-failure
+        delay: 5s
+        max_attempts: 3
+        window: 120s
+    ports:
+    - "1883:1883"
+
+# EFK Stack ----------------
+  fluentd:
+    image: cellarstone/cellar.hub.fluentd:0.0.2
+    deploy:
+      replicas: 1
+      update_config:
+        parallelism: 2
+        delay: 5s
+        order: stop-first
+      restart_policy:
+        condition: on-failure
+        delay: 5s
+        max_attempts: 3
+        window: 120s
+    volumes:
+      - ./Core/Log/fluentd/conf:/fluentd/etc
+    ports:
+      - "24224:24224"
+      - "24224:24224/udp"
+
+  elasticsearch:
+    image: elasticsearch
+    deploy:
+      replicas: 1
+      update_config:
+        parallelism: 2
+        delay: 5s
+        order: stop-first
+      restart_policy:
+        condition: on-failure
+        delay: 5s
+        max_attempts: 3
+        window: 120s
+    volumes:
+        - /data/cellarstone.hub/core/elasticsearch:/var/lib/elasticsearch
+    ports:
+      - "9200:9200"
+
+  kibana:
+    image: kibana
+    deploy:
+      replicas: 1
+      update_config:
+        parallelism: 2
+        delay: 5s
+        order: stop-first
+      restart_policy:
+        condition: on-failure
+        delay: 5s
+        max_attempts: 3
+        window: 120s
+    ports:
+      - "5601:5601"
+
+# PROMETHEUS ----------------
+  prometheus:
+    image: cellarstone/cellar.hub.prometheus:0.0.2
+    deploy:
+      replicas: 1
+      update_config:
+        parallelism: 2
+        delay: 5s
+        order: stop-first
+      restart_policy:
+        condition: on-failure
+        delay: 5s
+        max_attempts: 3
+        window: 120s
+    volumes:
+      - /data/cellarstone.hub/core/prometheus:/data/prometheus
+    ports:
+      - "9090:9090"
+    
+  #prometheus pushgateway
+  pushgateway:
+    image: prom/pushgateway
+    deploy:
+      replicas: 1
+      update_config:
+        parallelism: 2
+        delay: 5s
+        order: stop-first
+      restart_policy:
+        condition: on-failure
+        delay: 5s
+        max_attempts: 3
+        window: 120s
+    ports:
+      - 9091:9091
+
+# GRAFANA ----------------
+  grafana:
+    image: grafana/grafana
+    deploy:
+      replicas: 1
+      update_config:
+        parallelism: 2
+        delay: 5s
+        order: stop-first
+      restart_policy:
+        condition: on-failure
+        delay: 5s
+        max_attempts: 3
+        window: 120s
+    volumes:
+      - /data/cellarstone.hub/core/grafana:/var/lib/grafana
+    ports:
+      - '3000:3000'
+
+# NET-DATA ----------------
+  sysmon:
+    image: titpetric/netdata
+    deploy:
+      replicas: 1
+      update_config:
+        parallelism: 2
+        delay: 5s
+        order: stop-first
+      restart_policy:
+        condition: on-failure
+        delay: 5s
+        max_attempts: 3
+        window: 120s
+    volumes:
+      - /proc:/host/proc:ro
+      - /sys:/host/sys:ro
+    ports:
+      - '19999:19999'
+
+# TICK Stack ----------------
+
+  # Define a Telegraf service
+  telegraf:
+    image: telegraf:1.4.0
+    deploy:
+      replicas: 1
+      update_config:
+        parallelism: 2
+        delay: 5s
+        order: stop-first
+      restart_policy:
+        condition: on-failure
+        delay: 5s
+        max_attempts: 3
+        window: 120s
+    volumes:
+      - ./Core/Db/tickstack/telegraf.conf:/etc/telegraf/telegraf.conf:ro
+    ports:
+      - "8092:8092/udp"
+      - "8094:8094"
+      - "8125:8125/udp"
+
+  # Define an InfluxDB service
+  influxdb:
+    image: influxdb:1.3.5
+    deploy:
+      replicas: 1
+      update_config:
+        parallelism: 2
+        delay: 5s
+        order: stop-first
+      restart_policy:
+        condition: on-failure
+        delay: 5s
+        max_attempts: 3
+        window: 120s
+    volumes:
+      - /data/cellarstone.hub/core/influxdb:/var/lib/influxdb
+    ports:
+      - "8086:8086"
+
+  # Define a Chronograf service
+  chronograf:
+    image: chronograf:1.3.8
+    deploy:
+      replicas: 1
+      update_config:
+        parallelism: 2
+        delay: 5s
+        order: stop-first
+      restart_policy:
+        condition: on-failure
+        delay: 5s
+        max_attempts: 3
+        window: 120s
+    environment:
+      INFLUXDB_URL: http://influxdb:8086
+      KAPACITOR_URL: http://kapacitor:9092
+    ports:
+      - "8888:8888"
+      
+  # Define a Kapacitor service
+  kapacitor:
+    image: kapacitor:1.3.3
+    deploy:
+      replicas: 1
+      update_config:
+        parallelism: 2
+        delay: 5s
+        order: stop-first
+      restart_policy:
+        condition: on-failure
+        delay: 5s
+        max_attempts: 3
+        window: 120s
+    environment:
+      KAPACITOR_HOSTNAME: kapacitor
+      KAPACITOR_INFLUXDB_0_URLS_0: http://influxdb:8086
+    ports:
+      - "9092:9092"
+
+# MODULES ***************************
+
+  cellar-hub-module-office-api:
+    image: cellarstone/cellar.hub.module.office.api:0.0.2
+    deploy:
+      replicas: 1
+      update_config:
+        parallelism: 2
+        delay: 5s
+        order: stop-first
+      restart_policy:
+        condition: on-failure
+        delay: 5s
+        max_attempts: 3
+        window: 120s
+    logging:
+      driver: "fluentd"
+      options:
+        fluentd-address: localhost:24224
+        tag: docker.cellar.hub.module.office.api
+    ports:
+    - "44513:44513"
+
+  cellar-hub-module-office-meetingrooms:
+    image: cellarstone/cellar.hub.module.office.meetingrooms:0.0.2
+    deploy:
+      replicas: 1
+      update_config:
+        parallelism: 2
+        delay: 5s
+        order: stop-first
+      restart_policy:
+        condition: on-failure
+        delay: 5s
+        max_attempts: 3
+        window: 120s
+    logging:
+      driver: "fluentd"
+      options:
+        fluentd-address: localhost:24224
+        tag: docker.cellar.hub.module.office.meetingrooms
+    ports:
+    - "44511:44511"
+
+  cellar-hub-module-office-reception:
+    image: cellarstone/cellar.hub.module.office.reception:0.0.2
+    deploy:
+      replicas: 1
+      update_config:
+        parallelism: 2
+        delay: 5s
+        order: stop-first
+      restart_policy:
+        condition: on-failure
+        delay: 5s
+        max_attempts: 3
+        window: 120s
+    logging:
+      driver: "fluentd"
+      options:
+        fluentd-address: localhost:24224
+        tag: docker.cellar.hub.module.office.reception
+    ports:
+    - "44512:44512"
+
+

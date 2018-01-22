@@ -155,3 +155,35 @@ func cliHandler(w http.ResponseWriter, r *http.Request) {
 	}
 
 }
+
+func dockerStackHandler(w http.ResponseWriter, r *http.Request) {
+
+	if r.Method == "GET" {
+		dockerStackTemplate.ExecuteTemplate(w, "layouttemplate", nil)
+	} else if r.Method == "POST" {
+		r.ParseForm()
+
+		command := r.Form.Get("command")
+
+		result := ""
+
+		if command == "Start" {
+			result = cmd_dockerstack_deploy()
+		} else if command == "Check" {
+			result = cmd_dockerstack_check()
+		} else if command == "Stop" {
+			result = cmd_dockerstack_stop()
+		}
+
+		dataFormatted := strings.Split(result, "\n")
+
+		dto := cellarDTO{
+			Data: dataFormatted,
+		}
+
+		// logger.Information(data)
+
+		dockerStackTemplate.ExecuteTemplate(w, "layouttemplate", dto)
+	}
+
+}
