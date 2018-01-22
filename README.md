@@ -32,6 +32,11 @@ Set environment variable `GOOGLE_APPLICATION_CREDENTIALS` by editing `.bashrc` u
 gedit /home/cellarstone/.bashrc
 ```
 
+and add this row at the end of file
+
+`export GOOGLE_APPLICATION_CREDENTIALS="/home/cellarstone/Apps/GoogleCloudKeys/cellarhubmanager/GoogleCloud-cellarhubmanager.json"`
+
+
 ### Environment way
 
 
@@ -42,7 +47,8 @@ gedit /etc/environment
 
 and add this row at the end of file
 
-`export GOOGLE_APPLICATION_CREDENTIALS="/home/cellarstone/Apps/GoogleCloudKeys/cellarhubmanager/GoogleCloud-cellarhubmanager.json"`
+`GOOGLE_APPLICATION_CREDENTIALS="/home/cellarstone/Apps/GoogleCloudKeys/cellarhubmanager/GoogleCloud-cellarhubmanager.json"`
+
 
 ## Ngrok link
 

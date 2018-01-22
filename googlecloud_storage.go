@@ -13,6 +13,8 @@ import (
 
 func checkDockerStackFile() {
 
+	fmt.Println("TEST1")
+
 	bucket := "cellarhub-dockerstack-files"
 	file := "docker-stack.yml"
 
@@ -25,7 +27,11 @@ func checkDockerStackFile() {
 	}
 	// [END setup]
 
+	fmt.Println("TEST2")
+
 	isChangedVariable := isChanged(client, bucket, file)
+
+	fmt.Println("TEST3")
 
 	if isChangedVariable {
 
