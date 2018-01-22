@@ -21,9 +21,6 @@ type cellarDTO struct {
 
 func indexHandler(w http.ResponseWriter, r *http.Request) {
 
-	checkRunningNgrok("http", "10001")
-	checkRunningNgrok("tcp", "22")
-
 	dto := cellarDTO{
 		Hostname:       cellarHostName,
 		Version:        cellarVersion,
