@@ -25,11 +25,20 @@ and enable Docker Swarm with command `docker swarm init`
 
 Add into path `/home/cellarstone/Apps/GoogleCloudKeys/cellarhubmanager` file `GoogleCloud-cellarhubmanager.json`
 
+### User way
 Set environment variable `GOOGLE_APPLICATION_CREDENTIALS` by editing `.bashrc` user file. Use this command 
 
 ```Shell
 gedit /home/cellarstone/.bashrc
 ```
+
+### Environment way
+
+
+```Shell
+gedit /etc/environment
+```
+
 
 and add this row at the end of file
 

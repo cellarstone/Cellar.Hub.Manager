@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"io/ioutil"
 	"log"
-	"time"
 
 	"cloud.google.com/go/storage"
 	"golang.org/x/net/context"
@@ -12,10 +11,7 @@ import (
 
 // STORAGE -> check newer version of docker-stack.yml
 
-var lastUpdated time.Time
-
 func checkDockerStackFile() {
-	lastUpdated = time.Now().AddDate(-1, 0, 0)
 
 	bucket := "cellarhub-dockerstack-files"
 	file := "docker-stack.yml"
@@ -66,8 +62,12 @@ func isChanged(client *storage.Client, bucket, object string) bool {
 
 	var lastUpdateInCloud = rc.Updated
 
+	fmt.Println(lastUpdated)
+	fmt.Println(lastUpdateInCloud)
+
 	if lastUpdated.Before(lastUpdateInCloud) {
 		fmt.Print("IN CLOUD IS NEWER VERSION")
+		lastUpdated = lastUpdateInCloud
 		return true
 	}
 

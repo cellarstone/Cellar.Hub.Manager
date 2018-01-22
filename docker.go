@@ -16,6 +16,28 @@ func cmd_dockerstack_deploy() string {
 	return data
 }
 
+func cmd_dockerstack_check() string {
+	cccmd := "docker service ls"
+	c5, err := exec.Command("bash", "-c", cccmd).Output()
+	if err != nil {
+		logger.Error(err.Error())
+	}
+	data := printOutput(c5)
+
+	return data
+}
+
+func cmd_dockerstack_stop() string {
+	cccmd := "docker stack rm cellarhub"
+	c5, err := exec.Command("bash", "-c", cccmd).Output()
+	if err != nil {
+		logger.Error(err.Error())
+	}
+	data := printOutput(c5)
+
+	return data
+}
+
 func cmd_dockerimages() string {
 	// Create an *exec.Cmd
 	cmd := exec.Command("docker", "images")

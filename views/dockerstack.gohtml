@@ -1,0 +1,24 @@
+{{define "yield"}}
+
+    <form action="#" method="post">
+        <button type="submit" name="command" value="Start" class="btn btn-primary">Start</button>
+        <button type="submit" name="command" value="Check" class="btn btn-primary">Check</button>
+        <button type="submit" name="command" value="Stop" class="btn btn-primary">Stop</button>
+    </form>
+
+
+
+  <div class="shell-wrap">
+      <p class="shell-top-bar">$bin/bash</p>
+      <ul class="shell-body">
+
+        {{range .Data}} 
+          <pre> 
+              {{.}}
+          </pre>  
+        {{end}}
+
+      </ul>
+  </div>
+
+{{end}}

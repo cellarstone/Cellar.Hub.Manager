@@ -24,15 +24,15 @@ gfj0W1ovPzXas/+elnyuZumyZ1KMJWgL
 
 func checkEquinox() {
 
-	result := update("stable")
+	result := equinoxUpdate()
 
 	if result == "OK" {
 
 		//kill all ngrok
-		killAllNgrokProcesses()
+		//killAllNgrokProcesses()
 
 		//RESTART
-		restartBrute()
+		//restartBrute()
 
 		fmt.Println("OK - EVERYTHING WAS UPDATED")
 
@@ -42,7 +42,7 @@ func checkEquinox() {
 
 	} else {
 
-		fmt.Println("STRANGE")
+		fmt.Println(result)
 
 	}
 
@@ -53,40 +53,67 @@ func checkEquinox() {
 //************************************************************
 //************************************************************
 // EQUINOX
-
-func update(channel string) string {
-
-	fmt.Println("START UPDATING")
-
-	opts := equinox.Options{Channel: channel}
+func equinoxUpdate() string {
+	var opts equinox.Options
 	if err := opts.SetPublicKeyPEM(publicKey); err != nil {
 		fmt.Println(err)
 		return err.Error()
 	}
-
-	fmt.Println("check for the update")
 
 	// check for the update
 	resp, err := equinox.Check(appID, opts)
 	switch {
 	case err == equinox.NotAvailableErr:
 		fmt.Println("No update available, already at the latest version!")
-		return "NO_UPDATES"
+		return "NO UPDATES"
 	case err != nil:
-		fmt.Println(err)
+		fmt.Println("Update failed:", err)
 		return err.Error()
 	}
 
 	// fetch the update and apply it
 	err = resp.Apply()
 	if err != nil {
-		fmt.Println(err)
 		return err.Error()
 	}
 
 	fmt.Printf("Updated to new version: %s!\n", resp.ReleaseVersion)
 	return "OK"
 }
+
+// func update(channel string) string {
+
+// 	fmt.Println("START UPDATING")
+
+// 	opts := equinox.Options{Channel: channel}
+// 	if err := opts.SetPublicKeyPEM(publicKey); err != nil {
+// 		fmt.Println(err)
+// 		return err.Error()
+// 	}
+
+// 	fmt.Println("check for the update")
+
+// 	// check for the update
+// 	resp, err := equinox.Check(appID, opts)
+// 	switch {
+// 	case err == equinox.NotAvailableErr:
+// 		fmt.Println("No update available, already at the latest version!")
+// 		return "NO_UPDATES"
+// 	case err != nil:
+// 		fmt.Println(err)
+// 		return err.Error()
+// 	}
+
+// 	// fetch the update and apply it
+// 	err = resp.Apply()
+// 	if err != nil {
+// 		fmt.Println(err)
+// 		return err.Error()
+// 	}
+
+// 	fmt.Printf("Updated to new version: %s!\n", resp.ReleaseVersion)
+// 	return "OK"
+// }
 
 //************************************************************
 //************************************************************
