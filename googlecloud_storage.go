@@ -23,7 +23,7 @@ func checkDockerStackFile() {
 	// [START setup]
 	client, err := storage.NewClient(ctx)
 	if err != nil {
-		log.Fatal(err)
+		fmt.Println(err.Error())
 	}
 	// [END setup]
 
