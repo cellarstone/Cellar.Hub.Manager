@@ -43,6 +43,7 @@ func myRouter() *mux.Router {
 	r.Handle("/hubprocesses", http.HandlerFunc(hubprocessesHandler))
 	r.Handle("/hubsystemd", http.HandlerFunc(hubsystemdHandler))
 	r.Handle("/cli", http.HandlerFunc(cliHandler))
+	r.Handle("/dockerstack", http.HandlerFunc(dockerStackHandler))
 	// r.Handle("/api/test", http.HandlerFunc(apiTestHandler))
 	// r.Handle("/api/allprocesses", http.HandlerFunc(apiAllProcessesHandler))
 	// r.Handle("/api/actualdirectory", http.HandlerFunc(apiActualDirectoryHandler))
