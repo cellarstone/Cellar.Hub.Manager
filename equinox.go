@@ -32,7 +32,7 @@ func checkEquinox() {
 		//killAllNgrokProcesses()
 
 		//RESTART
-		//restartBrute()
+		restartBrute()
 
 		fmt.Println("OK - EVERYTHING WAS UPDATED")
 
