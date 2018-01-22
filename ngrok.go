@@ -92,7 +92,7 @@ func connectToNgrok() {
 			return
 		}
 
-		fmt.Printf("\nResponse Body: %v", resp)
+		//fmt.Printf("\nResponse Body: %v", resp)
 
 		var m CredentialDTO
 		err = json.Unmarshal(resp.Body(), &m)
