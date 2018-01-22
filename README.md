@@ -73,8 +73,8 @@ Description=Cellar.Hub.Manager service
 
 [Service]
 Type=simple
-User=cellarstone
-Group=sudo
+User=root
+Group=root
 WorkingDirectory=/home/cellarstone/Apps/Cellar.Hub.Manager
 ExecStart=/home/cellarstone/Apps/Cellar.Hub.Manager/cellarhubmanager
 Restart=always

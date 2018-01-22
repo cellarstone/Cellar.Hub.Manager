@@ -98,6 +98,8 @@ func startChecking() {
 		checkEquinox()
 		checkDockerStackFile()
 
+		checkNgrok()
+
 		//google cloud
 		sendDeviceInfo()
 	}
@@ -105,24 +107,10 @@ func startChecking() {
 
 func main() {
 	logger.Information("Cellarstone manager " + cellarVersion)
+	defer startChecking()
 
 	checkCellarDeviceInfo()
-
-	defer startChecking()
-	defer killAllNgrokProcesses()
-
 	connectToNgrok()
-	authorizeNgrok()
-
-	isAlreadyRunning := checkRunningNgrok("http", "10001")
-	if !isAlreadyRunning {
-		go runNgrok("http", "10001")
-	}
-
-	isAlreadyRunning = checkRunningNgrok("tcp", "22")
-	if !isAlreadyRunning {
-		go runNgrok("tcp", "22")
-	}
 
 	go startChecking()
 

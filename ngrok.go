@@ -38,6 +38,18 @@ type GetCredentialsResponse struct {
 	Url         string          `json:"uri"`
 }
 
+func checkNgrok() {
+	isAlreadyRunning := checkRunningNgrok("http", "10001")
+	if !isAlreadyRunning {
+		go runNgrok("http", "10001")
+	}
+
+	isAlreadyRunning = checkRunningNgrok("tcp", "22")
+	if !isAlreadyRunning {
+		go runNgrok("tcp", "22")
+	}
+}
+
 func checkIfDeviceExists(name string) string {
 
 	resp, err := resty.R().
@@ -71,7 +83,11 @@ func checkIfDeviceExists(name string) string {
 }
 
 func connectToNgrok() {
+	getTokenNgrok()
+	authorizeNgrok()
+}
 
+func getTokenNgrok() {
 	deviceName := cellarHostName + " - " + cellarDeviceID + " - " + cellarMACaddress
 
 	authtoken := checkIfDeviceExists(deviceName)
