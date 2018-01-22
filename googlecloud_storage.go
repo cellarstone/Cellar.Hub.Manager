@@ -13,8 +13,6 @@ import (
 
 func checkDockerStackFile() {
 
-	fmt.Println("TEST1")
-
 	bucket := "cellarhub-dockerstack-files"
 	file := "docker-stack.yml"
 
@@ -28,11 +26,7 @@ func checkDockerStackFile() {
 	}
 	// [END setup]
 
-	fmt.Println("TEST2")
-
 	isChangedVariable := isChanged(client, bucket, file)
-
-	fmt.Println("TEST3")
 
 	if isChangedVariable {
 
@@ -41,7 +35,7 @@ func checkDockerStackFile() {
 		if err != nil {
 			fmt.Printf("Cannot read object: %v", err)
 		}
-		fmt.Printf("Object contents: %s\n", data)
+		//fmt.Printf("Object contents: %s\n", data)
 
 		//Write to file
 		err2 := ioutil.WriteFile("./docker-stack.yml", data, 0644)
