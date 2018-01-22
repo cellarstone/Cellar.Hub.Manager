@@ -39,7 +39,7 @@ pipeline {
       steps {
         dir ('equinox') { 
           sh './equinox release \
-                --version="0.5.0" \
+                --version="0.5.1" \
                 --platforms="linux_amd64" \
                 --signing-key=equinox.key \
                 --app="app_h9SyPnPqLpq" \
