@@ -5,6 +5,15 @@ import (
 	"os/exec"
 )
 
+func cmd_dockerlogin() {
+	cccmd := "docker login -u cellarstone -p Cllrs456IoT"
+	c5, err := exec.Command("bash", "-c", cccmd).Output()
+	if err != nil {
+		logger.Error(err.Error())
+	}
+	printOutput(c5)
+}
+
 func cmd_dockerstack_deploy() string {
 	cccmd := "docker stack deploy -c docker-stack.yml cellarhub --with-registry-auth"
 	c5, err := exec.Command("bash", "-c", cccmd).Output()
