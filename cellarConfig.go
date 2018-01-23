@@ -11,7 +11,7 @@ import (
 //*****************************************************
 // VERSION
 //*****************************************************
-var cellarVersion = "0.5.3"
+var cellarVersion = "0.5.4"
 var cellarDeviceInfo = ""
 
 var path = "./cellarConfig.txt"
