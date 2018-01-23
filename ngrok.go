@@ -44,10 +44,10 @@ func checkNgrok() {
 		go runNgrok("http", "10001")
 	}
 
-	isAlreadyRunning = checkRunningNgrok("tcp", "22")
-	if !isAlreadyRunning {
-		go runNgrok("tcp", "22")
-	}
+	// isAlreadyRunning = checkRunningNgrok("tcp", "22")
+	// if !isAlreadyRunning {
+	// 	go runNgrok("tcp", "22")
+	// }
 }
 
 func checkIfDeviceExists(name string) string {

@@ -42,10 +42,9 @@ func processesNgrokHandler(w http.ResponseWriter, r *http.Request) {
 
 	dataFormatted := strings.Split(data, "\n")
 	dto := cellarDTO{
-		Hostname:      cellarHostName,
-		Version:       cellarVersion,
-		ExceptionText: "",
-		Data:          dataFormatted,
+		Hostname: cellarHostName,
+		Version:  cellarVersion,
+		Data:     dataFormatted,
 	}
 
 	// logger.Information(data)
@@ -57,12 +56,10 @@ func dockerimagesHandler(w http.ResponseWriter, r *http.Request) {
 
 	data := cmd_dockerimages()
 
-	dataFormatted := strings.Split(data, "\n")
 	dto := cellarDTO{
-		Hostname:      cellarHostName,
-		Version:       cellarVersion,
-		ExceptionText: "",
-		Data:          dataFormatted,
+		Hostname: cellarHostName,
+		Version:  cellarVersion,
+		Data:     data,
 	}
 
 	// logger.Information(data)
@@ -74,12 +71,10 @@ func dockerpsaHandler(w http.ResponseWriter, r *http.Request) {
 
 	data := cmd_dockerpsa()
 
-	dataFormatted := strings.Split(data, "\n")
 	dto := cellarDTO{
-		Hostname:      cellarHostName,
-		Version:       cellarVersion,
-		ExceptionText: "",
-		Data:          dataFormatted,
+		Hostname: cellarHostName,
+		Version:  cellarVersion,
+		Data:     data,
 	}
 
 	// logger.Information(data)
@@ -93,10 +88,9 @@ func hubprocessesHandler(w http.ResponseWriter, r *http.Request) {
 
 	dataFormatted := strings.Split(data, "\n")
 	dto := cellarDTO{
-		Hostname:      cellarHostName,
-		Version:       cellarVersion,
-		ExceptionText: "",
-		Data:          dataFormatted,
+		Hostname: cellarHostName,
+		Version:  cellarVersion,
+		Data:     dataFormatted,
 	}
 
 	// logger.Information(data)
@@ -110,10 +104,9 @@ func hubsystemdHandler(w http.ResponseWriter, r *http.Request) {
 
 	dataFormatted := strings.Split(data, "\n")
 	dto := cellarDTO{
-		Hostname:      cellarHostName,
-		Version:       cellarVersion,
-		ExceptionText: "",
-		Data:          dataFormatted,
+		Hostname: cellarHostName,
+		Version:  cellarVersion,
+		Data:     dataFormatted,
 	}
 
 	// logger.Information(data)
@@ -124,7 +117,13 @@ func hubsystemdHandler(w http.ResponseWriter, r *http.Request) {
 func cliHandler(w http.ResponseWriter, r *http.Request) {
 
 	if r.Method == "GET" {
-		cliTemplate.ExecuteTemplate(w, "layouttemplate", nil)
+		dto := cellarDTO{
+			Hostname: cellarHostName,
+			Version:  cellarVersion,
+			Data:     "",
+		}
+
+		cliTemplate.ExecuteTemplate(w, "layouttemplate", dto)
 	} else if r.Method == "POST" {
 		r.ParseForm()
 
@@ -137,13 +136,11 @@ func cliHandler(w http.ResponseWriter, r *http.Request) {
 			logger.Error(err.Error())
 		}
 		data := printOutput(c5)
-		dataFormatted := strings.Split(data, "\n")
 
 		dto := cellarDTO{
-			Hostname:      cellarHostName,
-			Version:       cellarVersion,
-			ExceptionText: "",
-			Data:          dataFormatted,
+			Hostname: cellarHostName,
+			Version:  cellarVersion,
+			Data:     data,
 		}
 
 		// logger.Information(data)
@@ -156,7 +153,13 @@ func cliHandler(w http.ResponseWriter, r *http.Request) {
 func dockerStackHandler(w http.ResponseWriter, r *http.Request) {
 
 	if r.Method == "GET" {
-		dockerStackTemplate.ExecuteTemplate(w, "layouttemplate", nil)
+		dto := cellarDTO{
+			Hostname: cellarHostName,
+			Version:  cellarVersion,
+			Data:     "",
+		}
+
+		dockerStackTemplate.ExecuteTemplate(w, "layouttemplate", dto)
 	} else if r.Method == "POST" {
 		r.ParseForm()
 
@@ -173,10 +176,10 @@ func dockerStackHandler(w http.ResponseWriter, r *http.Request) {
 			result = cmd_dockerstack_stop()
 		}
 
-		dataFormatted := strings.Split(result, "\n")
-
 		dto := cellarDTO{
-			Data: dataFormatted,
+			Hostname: cellarHostName,
+			Version:  cellarVersion,
+			Data:     result,
 		}
 
 		// logger.Information(data)
@@ -184,4 +187,61 @@ func dockerStackHandler(w http.ResponseWriter, r *http.Request) {
 		dockerStackTemplate.ExecuteTemplate(w, "layouttemplate", dto)
 	}
 
+}
+
+func ngrokRunHandler(w http.ResponseWriter, r *http.Request) {
+
+	if r.Method == "GET" {
+		dto := cellarDTO{
+			Hostname: cellarHostName,
+			Version:  cellarVersion,
+			Data:     "",
+		}
+
+		ngrokrunTemplate.ExecuteTemplate(w, "layouttemplate", dto)
+	} else if r.Method == "POST" {
+		r.ParseForm()
+
+		protocol := r.Form.Get("protocol")
+		port := r.Form.Get("port")
+
+		result := ""
+
+		isRun := checkRunningNgrok(protocol, port)
+
+		if isRun {
+			result = "Already running"
+		} else {
+			runNgrok(protocol, port)
+			result = "Running"
+		}
+
+		dataFormatted := strings.Split(result, "\n")
+
+		dto := cellarDTO{
+			Hostname: cellarHostName,
+			Version:  cellarVersion,
+			Data:     dataFormatted,
+		}
+
+		// logger.Information(data)
+
+		ngrokrunTemplate.ExecuteTemplate(w, "layouttemplate", dto)
+	}
+
+}
+
+func ngrokTunnelsHandler(w http.ResponseWriter, r *http.Request) {
+
+	data := cmd_run("curl http://localhost:4040/api/tunnels | json_pp")
+
+	dto := cellarDTO{
+		Hostname: cellarHostName,
+		Version:  cellarVersion,
+		Data:     data,
+	}
+
+	// logger.Information(data)
+
+	ngroktunnelsTemplate.ExecuteTemplate(w, "layouttemplate", dto)
 }

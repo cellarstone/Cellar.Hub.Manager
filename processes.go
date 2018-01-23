@@ -12,3 +12,13 @@ func cmd_filterProcesses(programname string) string {
 
 	return data
 }
+
+func cmd_run(command string) string {
+	c5, err := exec.Command("bash", "-c", command).Output()
+	if err != nil {
+		logger.Error(err.Error())
+	}
+	data := printOutput(c5)
+
+	return data
+}
