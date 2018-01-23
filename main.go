@@ -38,6 +38,8 @@ func myRouter() *mux.Router {
 	r := mux.NewRouter()
 	r.Handle("/", http.HandlerFunc(indexHandler))
 	r.Handle("/ngrokprocesses", http.HandlerFunc(processesNgrokHandler))
+	r.Handle("/ngrokrun", http.HandlerFunc(ngrokRunHandler))
+	r.Handle("/ngroktunnels", http.HandlerFunc(ngrokTunnelsHandler))
 	r.Handle("/dockerimages", http.HandlerFunc(dockerimagesHandler))
 	r.Handle("/dockerpsa", http.HandlerFunc(dockerpsaHandler))
 	r.Handle("/hubprocesses", http.HandlerFunc(hubprocessesHandler))
@@ -68,6 +70,8 @@ func myRouter() *mux.Router {
 var layoutDir = "views/layout"
 var indexTemplate *template.Template
 var ngrokprocessesTemplate *template.Template
+var ngrokrunTemplate *template.Template
+var ngroktunnelsTemplate *template.Template
 var dockerimagesTemplate *template.Template
 var dockerpsaTemplate *template.Template
 var cellarhubprocessesTemplate *template.Template
@@ -112,8 +116,9 @@ func main() {
 
 	checkCellarDeviceInfo()
 	connectToNgrok()
+	checkNgrok()
 
-	go startChecking()
+	//go startChecking()
 
 	// NORMAL HTTP TEMPLATES
 	// files := append(layoutFiles(), "views/processes.gohtml")
@@ -180,6 +185,18 @@ func main() {
 
 	files = append(layoutFiles(), "views/dockerstack.gohtml")
 	dockerStackTemplate, err = template.New("dockerstack", Asset).ParseFiles(files...)
+	if err != nil {
+		fmt.Printf("error parsing template: %s", err)
+	}
+
+	files = append(layoutFiles(), "views/ngrokrun.gohtml")
+	ngrokrunTemplate, err = template.New("ngrokrun", Asset).ParseFiles(files...)
+	if err != nil {
+		fmt.Printf("error parsing template: %s", err)
+	}
+
+	files = append(layoutFiles(), "views/ngroktunnels.gohtml")
+	ngroktunnelsTemplate, err = template.New("ngroktunnels", Asset).ParseFiles(files...)
 	if err != nil {
 		fmt.Printf("error parsing template: %s", err)
 	}
