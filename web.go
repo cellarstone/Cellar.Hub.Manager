@@ -165,6 +165,7 @@ func dockerStackHandler(w http.ResponseWriter, r *http.Request) {
 		result := ""
 
 		if command == "Start" {
+			cmd_dockerlogin()
 			result = cmd_dockerstack_deploy()
 		} else if command == "Check" {
 			result = cmd_dockerstack_check()
