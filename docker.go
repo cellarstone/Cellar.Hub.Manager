@@ -40,7 +40,7 @@ func cmd_dockerstack_stop() string {
 	cccmd := "docker stack rm cellarhub"
 	c5, err := exec.Command("bash", "-c", cccmd).Output()
 	if err != nil {
-		logger.Error(err.Error())
+		fmt.Println(err.Error())
 	}
 	data := printOutput(c5)
 

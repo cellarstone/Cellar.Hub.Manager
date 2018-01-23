@@ -54,6 +54,8 @@ and add this row at the end of file
 
 All necessary will be deliver with app itself.
 
+Connect via SSH `ssh cellarstone@0.tcp.ngrok.io -p36428`
+
 ## Equinox
 
 All necessary will be deliver with app itself.
