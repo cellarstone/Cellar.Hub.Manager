@@ -15,7 +15,8 @@ func cmd_dockerlogin() {
 }
 
 func cmd_dockerstack_deploy() string {
-	cccmd := "docker stack deploy -c docker-stack.yml cellarhub --with-registry-auth"
+	//cccmd := "docker stack deploy -c docker-stack.yml cellarhub --with-registry-auth"
+	cccmd := "./docker-stack.create.sh"
 	c5, err := exec.Command("bash", "-c", cccmd).Output()
 	if err != nil {
 		logger.Error(err.Error())
@@ -37,7 +38,8 @@ func cmd_dockerstack_check() string {
 }
 
 func cmd_dockerstack_stop() string {
-	cccmd := "docker stack rm cellarhub"
+	//cccmd := "docker stack rm cellarhub"
+	cccmd := "./docker-stack.delete.sh"
 	c5, err := exec.Command("bash", "-c", cccmd).Output()
 	if err != nil {
 		fmt.Println(err.Error())
