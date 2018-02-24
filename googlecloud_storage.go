@@ -11,10 +11,10 @@ import (
 
 // STORAGE -> check newer version of docker-stack.yml
 
-func checkDockerStackFile() {
+func checkDockerStackFile(filename string) {
 
 	bucket := "cellarhub-dockerstack-files"
-	file := "docker-stack.yml"
+	//file := filename
 
 	ctx := context.Background()
 
@@ -26,19 +26,19 @@ func checkDockerStackFile() {
 	}
 	// [END setup]
 
-	isChangedVariable := isChanged(client, bucket, file)
+	isChangedVariable := isChanged(client, bucket, filename)
 
 	if isChangedVariable {
 
 		// list buckets from the project
-		data, err := read(client, "cellarhub-dockerstack-files", "docker-stack.yml")
+		data, err := read(client, "cellarhub-dockerstack-files", filename)
 		if err != nil {
 			fmt.Printf("Cannot read object: %v", err)
 		}
 		//fmt.Printf("Object contents: %s\n", data)
 
 		//Write to file
-		err2 := ioutil.WriteFile("./docker-stack.yml", data, 0644)
+		err2 := ioutil.WriteFile("./"+filename, data, 0644)
 		if err2 != nil {
 			fmt.Printf("cannor write into file: %v", err2)
 		}

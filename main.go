@@ -101,7 +101,8 @@ func startChecking() {
 	for {
 		time.Sleep(1 * time.Minute)
 		checkEquinox()
-		checkDockerStackFile()
+		checkDockerStackFile("docker-stack.create.sh")
+		checkDockerStackFile("docker-stack.delete.sh")
 
 		checkNgrok()
 
