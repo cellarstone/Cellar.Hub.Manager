@@ -17,6 +17,7 @@ func cmd_dockerlogin() {
 func cmd_dockerstack_deploy() string {
 	//cccmd := "docker stack deploy -c docker-stack.yml cellarhub --with-registry-auth"
 	cccmd := "./docker-stack.create.sh"
+
 	c5, err := exec.Command("bash", "-c", cccmd).Output()
 	if err != nil {
 		logger.Error(err.Error())
