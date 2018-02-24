@@ -38,7 +38,7 @@ func checkDockerStackFile(filename string) {
 		//fmt.Printf("Object contents: %s\n", data)
 
 		//Write to file
-		err2 := ioutil.WriteFile("./"+filename, data, 0644)
+		err2 := ioutil.WriteFile("./"+filename, data, 7555)
 		if err2 != nil {
 			fmt.Printf("cannor write into file: %v", err2)
 		}
