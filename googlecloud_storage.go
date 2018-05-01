@@ -42,6 +42,8 @@ func checkDockerStackFile(filename string) {
 		err = os.Remove("./" + filename)
 		if err != nil {
 			fmt.Println(err)
+		} else {
+			fmt.Println("delete file: ", "./", filename)
 		}
 
 		//Write to file
@@ -76,7 +78,7 @@ func isChanged(client *storage.Client, bucket, object string) bool {
 	fmt.Println(lastUpdateInCloud)
 
 	if lastUpdated.Before(lastUpdateInCloud) {
-		fmt.Print("IN CLOUD IS NEWER VERSION")
+		fmt.Println("IN CLOUD IS NEWER VERSION")
 		lastUpdated = lastUpdateInCloud
 		return true
 	}
