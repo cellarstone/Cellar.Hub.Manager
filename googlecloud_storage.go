@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"io/ioutil"
 	"log"
+	"os"
 
 	"cloud.google.com/go/storage"
 	"golang.org/x/net/context"
@@ -37,10 +38,18 @@ func checkDockerStackFile(filename string) {
 		}
 		//fmt.Printf("Object contents: %s\n", data)
 
+		//remove file
+		err = os.Remove("./" + filename)
+		if err != nil {
+			fmt.Println(err)
+		}
+
 		//Write to file
 		err2 := ioutil.WriteFile("./"+filename, data, 0755)
 		if err2 != nil {
-			fmt.Printf("cannor write into file: %v", err2)
+			fmt.Println("cannor write into file: ", err2)
+		} else {
+			fmt.Println("new file: ", "./", filename)
 		}
 
 	}
